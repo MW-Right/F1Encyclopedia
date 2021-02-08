@@ -1,15 +1,17 @@
-﻿using Microsoft.Rest.ClientRuntime.Azure.Authentication.Utilities;
+﻿using Data.Models.ConstructorTeams;
+using Microsoft.Rest.ClientRuntime.Azure.Authentication.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Infrastructure.Data.Models.Common
+namespace Data.Models.Common
 {
-    class Colour
+    public class Colour
     {
         public int Id { get; set; }
         public string Hex { get; set; }
+        public Constructor Constructor { get; set; }
 
         public Colour() { }
 
@@ -31,5 +33,6 @@ namespace Infrastructure.Data.Models.Common
             else throw new Exception("A colour with too many characters was created, please check your input.");
         }
         */
+        
     }
 }

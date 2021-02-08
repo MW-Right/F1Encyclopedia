@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Infrastructure.Data.Models.ConstructorTeams
+namespace Data.Models.ConstructorTeams
 {
-    class Engineer
+    public class Engineer
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

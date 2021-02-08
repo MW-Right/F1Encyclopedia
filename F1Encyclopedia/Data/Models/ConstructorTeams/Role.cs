@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Infrastructure.Data.Models.ConstructorTeams
+namespace Data.Models.ConstructorTeams
 {
-    class Role
+    public class Role
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        public Role(string role)
+        {
+            Name = role;
+        }
     }
 }

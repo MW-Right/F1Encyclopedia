@@ -1,3 +1,4 @@
+using Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
 
 namespace F1EncyclopediaAPI
 {
@@ -12,10 +14,10 @@ namespace F1EncyclopediaAPI
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public IConfiguration configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -26,6 +28,10 @@ namespace F1EncyclopediaAPI
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddDbContext<F1EncyclopediaContext>(options =>
+                options.UseSqlServer(configuration.GetConnectionString("F1EncyclopediaDb"))
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Infrastructure.Data.Models.Common
+namespace Data.Models.Common
 {
-    class RaceWeekend
+    public class RaceWeekend
     {
         public int Round { get; set; }
         public int Year { get; set; }
