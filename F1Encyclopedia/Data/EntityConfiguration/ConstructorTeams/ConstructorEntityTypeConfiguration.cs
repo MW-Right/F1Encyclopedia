@@ -14,7 +14,7 @@ namespace F1Encyclopedia.Data.EntityConfiguration.ConstructorTeams
         {
             builder.HasKey(x => x.Id);
 
-            builder.HasOne(x => x.Nationality);
+            builder.HasOne(x => x.Country);
 
             builder.HasMany(x => x.TeamColours)
                 .WithOne(x => x.Constructor);

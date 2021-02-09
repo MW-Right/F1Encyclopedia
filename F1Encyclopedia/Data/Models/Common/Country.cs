@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Data.Models.Common
 {
-    public class Nationality
+    public class Country
     {
         public int Id { get; private set; }
         public string Name { get; set; }

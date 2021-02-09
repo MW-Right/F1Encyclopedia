@@ -4,14 +4,10 @@ using System.Text;
 
 namespace Data.Models.ConstructorTeams
 {
-    public class Role
+    public enum Role
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-
-        public Role(string role)
-        {
-            Name = role;
-        }
+        Driver,
+        Engineer,
+        TeamPrincipal
     }
 }
