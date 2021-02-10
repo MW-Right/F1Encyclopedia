@@ -1,11 +1,7 @@
-﻿using Data.Models.Common;
-using Data.Models.ConstructorTeams;
-using Data.Models.Drivers;
-using JetBrains.Annotations;
+﻿using F1Encyclopedia.Data.Models.ConstructorTeams;
+using F1Encyclopedia.Data.Models.Drivers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace F1Encyclopedia.Data.Models.Common
 {
@@ -17,9 +13,11 @@ namespace F1Encyclopedia.Data.Models.Common
         public DateTime DoB { get; set; }
 
         public int NationalityId { get; set; }
-        public Country Nationality { get; set; }
+        public Country Country { get; set; }
 
-        public int DriverInformationId { get; set; }
+        private string Nationality => Country.Nationality;
+
+        public int? DriverInformationId { get; set; }
         public DriverInformation DriverInformation { get; set; }
         
         public List<PersonRole> Teams { get; set; }

@@ -15,13 +15,15 @@ namespace F1Encyclopedia.Data.EntityConfiguration.Common
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.FirstName)
+                .IsRequired()
                 .HasMaxLength(50);
 
             builder.Property(x => x.LastName)
+                .IsRequired()
                 .HasMaxLength(50);
 
             builder.HasOne(x => x.DriverInformation)
-                .WithOne(x => x.Driver)
+                .WithOne()
                 .HasForeignKey<Person>(x => x.DriverInformationId);
         }
     }

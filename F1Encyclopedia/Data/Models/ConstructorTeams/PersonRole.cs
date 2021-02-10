@@ -1,12 +1,7 @@
-﻿using Data.Models.Common;
-using Data.Models.Drivers;
-using F1Encyclopedia.Data.Models.Common;
-using System;
-using System.Collections.Generic;
+﻿using F1Encyclopedia.Data.Models.Common;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
-namespace Data.Models.ConstructorTeams
+namespace F1Encyclopedia.Data.Models.ConstructorTeams
 {
     public class PersonRole
     {

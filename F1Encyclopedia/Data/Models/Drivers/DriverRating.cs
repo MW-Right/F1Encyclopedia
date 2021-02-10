@@ -1,10 +1,6 @@
-﻿using Data.Models.Common;
-using F1Encyclopedia.Data.Models.Common;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using F1Encyclopedia.Data.Models.Common;
 
-namespace Data.Models.Drivers
+namespace F1Encyclopedia.Data.Models.Drivers
 {
     public class DriverRating
     {

@@ -1,19 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using F1Encyclopedia;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Data.Models.Drivers;
-using Data.Models.ConstructorTeams;
 using System.Reflection;
-using Data.Models.Common;
 using F1Encyclopedia.Data.Models.Common;
 using F1Encyclopedia.Data.Models.Tracks;
+using F1Encyclopedia.Data.Models.ConstructorTeams;
+using F1Encyclopedia.Data.Models.Drivers;
 
-namespace Data
+namespace F1Encyclopedia.Data
 {
     public partial class F1EncyclopediaContext : DbContext
     {
+        public F1EncyclopediaContext() { }
         public F1EncyclopediaContext(DbContextOptions<F1EncyclopediaContext> options) : base(options) { }
 
         public virtual DbSet<Country> Countries { get; set; }

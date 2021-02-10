@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Models.Common
+namespace F1Encyclopedia.Data.Models.Common
 {
     public class RaceWeekend
     {

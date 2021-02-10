@@ -1,11 +1,6 @@
-﻿using Data.Models.ConstructorTeams;
-using Microsoft.Rest.ClientRuntime.Azure.Authentication.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using F1Encyclopedia.Data.Models.ConstructorTeams;
 
-namespace Data.Models.Common
+namespace F1Encyclopedia.Data.Models.Common
 {
     public class Colour
     {

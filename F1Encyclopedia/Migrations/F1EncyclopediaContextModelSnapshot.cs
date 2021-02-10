@@ -52,6 +52,9 @@ namespace F1Encyclopedia.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Nationality")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Countries");
@@ -212,18 +215,23 @@ namespace F1Encyclopedia.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DoB")
                         .HasColumnName("DateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DriverInformationId")
+                    b.Property<int?>("DriverInformationId")
                         .HasColumnType("int");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
@@ -232,10 +240,11 @@ namespace F1Encyclopedia.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DriverInformationId")
-                        .IsUnique();
+                    b.HasIndex("CountryId");
 
-                    b.HasIndex("NationalityId");
+                    b.HasIndex("DriverInformationId")
+                        .IsUnique()
+                        .HasFilter("[DriverInformationId] IS NOT NULL");
 
                     b.ToTable("Persons");
                 });
@@ -247,10 +256,32 @@ namespace F1Encyclopedia.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Alt")
+                        .HasColumnName("Altitude")
+                        .HasColumnType("int");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
 
+                    b.Property<float>("Lat")
+                        .HasColumnName("Lattitude")
+                        .HasColumnType("real");
+
+                    b.Property<float>("Long")
+                        .HasColumnName("Longitude")
+                        .HasColumnType("real");
+
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(75)")
+                        .HasMaxLength(75);
+
+                    b.Property<string>("WikiUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -264,7 +295,8 @@ namespace F1Encyclopedia.Migrations
                 {
                     b.HasOne("Data.Models.ConstructorTeams.Constructor", "Constructor")
                         .WithMany("TeamColours")
-                        .HasForeignKey("ConstructorId");
+                        .HasForeignKey("ConstructorId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Data.Models.Common.RaceWeekend", b =>
@@ -281,7 +313,7 @@ namespace F1Encyclopedia.Migrations
                     b.HasOne("Data.Models.Common.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -329,17 +361,14 @@ namespace F1Encyclopedia.Migrations
 
             modelBuilder.Entity("F1Encyclopedia.Data.Models.Common.Person", b =>
                 {
+                    b.HasOne("Data.Models.Common.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId");
+
                     b.HasOne("Data.Models.Drivers.DriverInformation", "DriverInformation")
                         .WithOne("Driver")
                         .HasForeignKey("F1Encyclopedia.Data.Models.Common.Person", "DriverInformationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Data.Models.Common.Country", "Nationality")
-                        .WithMany()
-                        .HasForeignKey("NationalityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("F1Encyclopedia.Data.Models.Tracks.Track", b =>
@@ -347,7 +376,7 @@ namespace F1Encyclopedia.Migrations
                     b.HasOne("Data.Models.Common.Country", "Country")
                         .WithMany()
                         .HasForeignKey("CountryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

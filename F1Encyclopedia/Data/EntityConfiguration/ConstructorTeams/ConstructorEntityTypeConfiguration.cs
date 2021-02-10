@@ -1,10 +1,6 @@
-﻿using Data.Models.ConstructorTeams;
+﻿using F1Encyclopedia.Data.Models.ConstructorTeams;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace F1Encyclopedia.Data.EntityConfiguration.ConstructorTeams
 {
@@ -14,13 +10,17 @@ namespace F1Encyclopedia.Data.EntityConfiguration.ConstructorTeams
         {
             builder.HasKey(x => x.Id);
 
-            builder.HasOne(x => x.Country);
+            builder.HasOne(x => x.Country)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasMany(x => x.TeamColours)
-                .WithOne(x => x.Constructor);
+                .WithOne(x => x.Constructor)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasMany(x => x.Staff)
-                .WithOne(x => x.Constructor);
+                .WithOne(x => x.Constructor)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

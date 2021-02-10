@@ -1,9 +1,6 @@
-﻿using Data.Models.Common;
-using Data.Models.ConstructorTeams;
-using F1Encyclopedia.Data.Models.Common;
-using System.Collections.Generic;
+﻿using F1Encyclopedia.Data.Models.Common;
 
-namespace Data.Models.Drivers
+namespace F1Encyclopedia.Data.Models.Drivers
 {
     public class DriverInformation
     {

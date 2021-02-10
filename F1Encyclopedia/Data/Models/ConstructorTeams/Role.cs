@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Data.Models.ConstructorTeams
+namespace F1Encyclopedia.Data.Models.ConstructorTeams
 {
     public enum Role
     {

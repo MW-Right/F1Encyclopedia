@@ -1,10 +1,6 @@
-﻿using Data.Models.ConstructorTeams;
+﻿using F1Encyclopedia.Data.Models.ConstructorTeams;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace F1Encyclopedia.Data.EntityConfiguration.ConstructorTeams
 {

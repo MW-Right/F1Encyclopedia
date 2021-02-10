@@ -14,7 +14,29 @@ namespace F1Encyclopedia.Data.EntityConfiguration.Tracks
         {
             builder.HasKey(x => x.Id);
 
-            builder.HasOne(x => x.Country);
+            builder.Property(x => x.Name)
+                .IsRequired()
+                .HasMaxLength(75);
+
+            builder.Property(x => x.City)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            builder.HasOne(x => x.Country)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Property(x => x.Lat)
+                .IsRequired()
+                .HasColumnName("Lattitude");
+
+            builder.Property(x => x.Long)
+                .IsRequired()
+                .HasColumnName("Longitude");
+
+            builder.Property(x => x.Alt)
+                .IsRequired()
+                .HasColumnName("Altitude");
         }
     }
 }

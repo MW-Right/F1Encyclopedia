@@ -1,8 +1,7 @@
-﻿using Data.Models.Common;
-using Data.Models.Drivers;
+﻿using F1Encyclopedia.Data.Models.Common;
 using System.Collections.Generic;
 
-namespace Data.Models.ConstructorTeams
+namespace F1Encyclopedia.Data.Models.ConstructorTeams
 {
     public class Constructor
     {
