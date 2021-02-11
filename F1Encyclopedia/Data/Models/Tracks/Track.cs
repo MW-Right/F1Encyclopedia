@@ -1,5 +1,6 @@
 ﻿using F1Encyclopedia.Data.Models.Common;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace F1Encyclopedia.Data.Models.Tracks
 {
@@ -20,7 +21,7 @@ namespace F1Encyclopedia.Data.Models.Tracks
 
         public static bool CheckHeadersCorrect(List<string> headers, out string badHeader)
         {
-            return F1Table.CheckHeadersCorrect(headers, typeof(Track), out badHeader);
+            return CheckHeadersCorrect(headers, typeof(Track), out badHeader);
         }
 
         public static Track FromCsv(string line, List<string> headers)
@@ -28,7 +29,30 @@ namespace F1Encyclopedia.Data.Models.Tracks
             var values = line.Split(',');
             var track = new Track();
 
-            return F1Table.FromCsv(values, headers, track);
+            var customTypeData = "";
+
+            var incompleteData = F1Table.FromCsv(values, headers, track, ref customTypeData);
+
+            if (customTypeData == "")
+            {
+                return incompleteData;
+            }
+            else
+            {
+                using (var db = new F1EncyclopediaContext())
+                {
+                    var country = db.Countries
+                        .Where(x => x.Name == customTypeData)
+                        .FirstOrDefault();
+
+                    if (country != null)
+                    {
+                        track.CountryId = country.Id;
+                    }
+                }
+            }
+
+            return track;
         }
     }
 }

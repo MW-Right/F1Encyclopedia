@@ -4,6 +4,9 @@ using F1Encyclopedia.Data.Models.Common;
 using F1Encyclopedia.Data.Models.Tracks;
 using F1Encyclopedia.Data.Models.ConstructorTeams;
 using F1Encyclopedia.Data.Models.Drivers;
+using System.Threading.Tasks;
+using System;
+using System.Linq;
 
 namespace F1Encyclopedia.Data
 {
@@ -32,6 +35,23 @@ namespace F1Encyclopedia.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=DESKTOP-RVN5OTQ;Database=F1Encyclopedia;Trusted_Connection=True;");
+        }
+
+        public bool Exists<T>(T entity) 
+            where T : class, new()
+        {
+            return Set<T>().Local.Any(e => 
+            {
+                foreach (var prop in typeof(T).GetProperties()) {
+                    if (e.GetType().GetProperty(prop.Name) == entity.GetType().GetProperty(prop.Name))
+                    {
+                        continue;
+                    }
+                    else
+                        return false;
+                }
+                return true;
+            });
         }
     }
 }

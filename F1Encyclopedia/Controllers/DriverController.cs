@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using Data;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using F1Encyclopedia.Data;
 
 namespace F1Encyclopedia.Controllers
 {

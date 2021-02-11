@@ -25,6 +25,10 @@ namespace F1Encyclopedia.Data.EntityConfiguration.Common
             builder.HasOne(x => x.DriverInformation)
                 .WithOne()
                 .HasForeignKey<Person>(x => x.DriverInformationId);
+
+            builder.HasOne(x => x.Country)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

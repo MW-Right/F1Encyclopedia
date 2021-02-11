@@ -1,5 +1,8 @@
-﻿using F1Encyclopedia.Data.Models.Common;
+﻿using F1Encyclopedia.Data;
+using F1Encyclopedia.Data.Models.Common;
 using F1Encyclopedia.Data.Models.Tracks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,10 +15,11 @@ namespace DataProcessor
     {
         public static string baseLocation = "..\\..\\..\\..\\DataTrawl\\";
 
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
-            // ProcessErgastCountries();
-            ProcessErgastTracks();
+            //ProcessErgastCountries();
+            //ProcessErgastTracks();
+            ProcessErgastDrivers();
         }
 
         public static void ProcessErgastCountries()
@@ -42,6 +46,8 @@ namespace DataProcessor
                     PropertyException(badHeader, typeof(Country));
                 }
             }
+
+            AddSeedDataToDb(data);
         }
 
         public static void ProcessErgastTracks()
@@ -65,14 +71,61 @@ namespace DataProcessor
                 }
                 else
                 {
-                    PropertyException(badHeader, typeof(Country));
+                    PropertyException(badHeader, typeof(Track));
                 }
             }
+
+            AddSeedDataToDb(data);
+        }
+
+        public static void ProcessErgastDrivers()
+        {
+            string fileLocation = baseLocation + "drivers.csv";
+            var data = new List<Person>();
+            var headers = new List<string>();
+
+            using (var sr = new StreamReader(fileLocation))
+            {
+                headers = sr.ReadLine().Split(',').ToList();
+                var badHeader = "";
+
+                if (Person.CheckHeadersCorrect(headers, out badHeader))
+                {
+                    data = File.ReadAllLines(fileLocation)
+                        .Skip(1)
+                        .Select(x => Person.FromCsv(x, headers))
+                        .ToList();
+                }
+                else
+                {
+                    PropertyException(badHeader, typeof(Person));
+                }
+            }
+
+            AddSeedDataToDb(data);
         }
 
         public static void PropertyException(string header, Type type)
         {
             throw new Exception($"Header: {header} was not found on object, please check the csv or add a new migration to add the new column to the db.");
+        }
+
+        public static void AddSeedDataToDb<T>(List<T> data)
+            where T : class, new()
+        {
+            using (var db = new F1EncyclopediaContext())
+            {
+                data.ForEach(d =>
+                {
+                    if (!db.Exists<T>(d)) db.Add(d);
+                    else
+                    {
+                        db.Update(d);
+                    }
+                });
+
+                db.SaveChanges();
+            }
         }
         
         // Redundant requests to Ergast API, requested the csv data.

@@ -56,6 +56,8 @@
     <Compile Remove="Migrations\20210210151425_UpdateConstructorAndPersonTables.Designer.cs" />
     <Compile Remove="Migrations\20210210152211_UpdateConstructorAndPersonTables.cs" />
     <Compile Remove="Migrations\20210210152211_UpdateConstructorAndPersonTables.Designer.cs" />
+    <Compile Remove="Migrations\20210211170954_AddWikiToPerson.cs" />
+    <Compile Remove="Migrations\20210211170954_AddWikiToPerson.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

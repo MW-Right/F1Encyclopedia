@@ -29,7 +29,11 @@ namespace F1Encyclopedia.Data.Models.Common
             var values = line.Split(',');
             var country = new Country();
 
-            return F1Table.FromCsv(values, headers, country);
+            string customTypeData = "";
+
+            var incompleteData = F1Table.FromCsv(values, headers, country, ref customTypeData);
+
+            return incompleteData;
         }
     }
 }
