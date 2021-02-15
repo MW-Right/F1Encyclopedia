@@ -7,6 +7,7 @@ using F1Encyclopedia.Data.Models.Drivers;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
+using F1Encyclopedia.Data.Models.Results;
 
 namespace F1Encyclopedia.Data
 {
@@ -15,15 +16,28 @@ namespace F1Encyclopedia.Data
         public F1EncyclopediaContext() { }
         public F1EncyclopediaContext(DbContextOptions<F1EncyclopediaContext> options) : base(options) { }
 
+        // Common
         public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<Person> Persons { get; set; }
         public virtual DbSet<RaceWeekend> RaceWeekends { get; set; }
+        
+        // Constructors
         public virtual DbSet<Colour> Colours { get; set; }
         public virtual DbSet<Constructor> Constructors { get; set; }
         public virtual DbSet<PersonRole> PersonRoles { get; set; }
+        
+        // Drivers
         public virtual DbSet<DriverInformation> DriverInformations { get; set; }
         public virtual DbSet<DriverRating> DriverRatings { get; set; }
+        
+        // Tracks
         public virtual DbSet<Track> Tracks { get; set; }
+        
+        // Results
+        public virtual DbSet<RaceStatus> RaceStatuses { get; set; }
+        public virtual DbSet<Qualifying> Qualifyings { get; set; }
+        public virtual DbSet<RaceResult> RaceResults { get; set; }
+        public virtual DbSet<LapTime> LapTimes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

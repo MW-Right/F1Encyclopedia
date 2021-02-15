@@ -19,7 +19,8 @@ namespace DataProcessor
         {
             //ProcessErgastCountries();
             //ProcessErgastTracks();
-            ProcessErgastDrivers();
+            //ProcessErgastDrivers();
+            ProcessErgastRaceWeekends();
         }
 
         public static void ProcessErgastCountries()
@@ -99,6 +100,33 @@ namespace DataProcessor
                 else
                 {
                     PropertyException(badHeader, typeof(Person));
+                }
+            }
+
+            AddSeedDataToDb(data);
+        }
+
+        public static void ProcessErgastRaceWeekends()
+        {
+            string fileLocation = baseLocation + "races.csv";
+            var data = new List<RaceWeekend>();
+            var headers = new List<string>();
+
+            using (var sr = new StreamReader(fileLocation))
+            {
+                headers = sr.ReadLine().Split(',').ToList();
+                var badHeader = "";
+
+                if (RaceWeekend.CheckHeadersCorrect(headers, out badHeader))
+                {
+                    data = File.ReadAllLines(fileLocation)
+                        .Skip(1)
+                        .Select(x => RaceWeekend.FromCsv(x, headers))
+                        .ToList();
+                }
+                else
+                {
+                    PropertyException(badHeader, typeof(RaceWeekend));
                 }
             }
 
