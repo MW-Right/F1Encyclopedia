@@ -8,7 +8,9 @@ namespace F1Encyclopedia.Data.EntityConfiguration.Drivers
     {
         public void Configure(EntityTypeBuilder<DriverInformation> builder)
         {
-            builder.HasKey(x => x.DriverInformationId);
+            builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
             builder.HasOne(x => x.Driver)
                 .WithOne(x => x.DriverInformation)

@@ -10,6 +10,8 @@ namespace F1Encyclopedia.Data.EntityConfiguration.Drivers
         {
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+
             builder.Property(x => x.FirstName)
                 .HasMaxLength(50);
 

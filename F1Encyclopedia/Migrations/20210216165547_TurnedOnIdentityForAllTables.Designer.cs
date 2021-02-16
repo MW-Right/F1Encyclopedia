@@ -4,14 +4,16 @@ using F1Encyclopedia.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace F1Encyclopedia.Migrations
 {
     [DbContext(typeof(F1EncyclopediaContext))]
-    partial class F1EncyclopediaContextModelSnapshot : ModelSnapshot
+    [Migration("20210216165547_TurnedOnIdentityForAllTables")]
+    partial class TurnedOnIdentityForAllTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

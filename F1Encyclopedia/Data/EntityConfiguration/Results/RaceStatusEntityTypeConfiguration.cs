@@ -10,6 +10,8 @@ namespace F1Encyclopedia.Data.EntityConfiguration.Results
         {
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+
             builder.Property(x => x.Status)
                 .HasMaxLength(50);
         }

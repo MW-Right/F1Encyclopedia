@@ -10,6 +10,8 @@ namespace F1Encyclopedia.Data.EntityConfiguration.Results
         {
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+
             builder.HasOne(x => x.RaceWeekend)
                 .WithMany()
                 .HasForeignKey(x => x.RaceWeekendId)

@@ -4,16 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace F1Encyclopedia.Data.EntityConfiguration.Common
 {
-    public class RaceWeekendEntityTypeConfiguration : IEntityTypeConfiguration<RaceWeekend>
+    public class CountryEntityTypeConfiguration : IEntityTypeConfiguration<Country>
     {
-        public void Configure(EntityTypeBuilder<RaceWeekend> builder)
+        public void Configure(EntityTypeBuilder<Country> builder)
         {
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
-
-            builder.Property(x => x.Year)
-                .HasMaxLength(2);
         }
     }
 }

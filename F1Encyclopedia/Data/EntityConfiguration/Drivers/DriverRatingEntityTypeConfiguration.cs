@@ -10,6 +10,8 @@ namespace F1Encyclopedia.Data.EntityConfiguration.Drivers
         {
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+
             builder.HasOne(x => x.Driver)
                 .WithMany(x => x.DriverRatings)
                 .OnDelete(DeleteBehavior.Restrict);

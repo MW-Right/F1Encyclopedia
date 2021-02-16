@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace F1Encyclopedia.Data.Models.Common
 {
-    public class Person : F1Table
+    public class Person
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -26,39 +26,58 @@ namespace F1Encyclopedia.Data.Models.Common
         public List<PersonRole> Teams { get; set; }
         public List<DriverRating> DriverRatings { get; set; }
 
-        public static bool CheckHeadersCorrect(List<string> headers, out string badHeader)
-        {
-            return CheckHeadersCorrect(headers, typeof(Person), out badHeader);
-        }
 
         public static Person FromCsv(string line, List<string> headers)
         {
             var values = line.Split(',');
-            var person = new Person();
-            var customTypeData = "";
-
-            var incompleteData = F1Table.FromCsv(values, headers, person, ref customTypeData);
-
-            if (customTypeData == "")
+            
+            using (var db = new F1EncyclopediaContext())
             {
-                return incompleteData;
-            }
-            else
-            {
-                using (var db = new F1EncyclopediaContext())
+                switch (values[4])
                 {
-                    var country = db.Countries
-                        .Where(p => p.Nationality == customTypeData)
-                        .FirstOrDefault();
-
-                    if (country != null)
-                    {
-                        person.CountryId = country.Id;
-                    }
+                    case "Rhodesian":
+                        {
+                            values[4] = "Zimbabwean";
+                            break;
+                        }
+                    case "East German":
+                        {
+                            values[4] = "German";
+                            break;
+                        }
+                    case "Argentine-Italian":
+                        {
+                            values[4] = "Argentine";
+                            break;
+                        }
+                    case "American-Italian":
+                        {
+                            values[4] = "American";
+                            break;
+                        }
+                    default: break;
                 }
-            }
 
-            return person;
+                var country = db.Countries
+                    .Where(p => p.Nationality == values[4])
+                    .FirstOrDefault();
+
+                if (country == null)
+                {
+                    Console.WriteLine($"Country not found from nationality: {values[4]}");
+                }
+
+                var person = new Person()
+                {
+                    FirstName = values[1],
+                    LastName = values[2],
+                    DoB = DateTime.Parse(values[3]),
+                    CountryId = country != null ? country.Id : 1,
+                    WikiUrl = values[5]
+                };
+
+                return person;
+            }
         }
     }
 }

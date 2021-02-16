@@ -14,6 +14,8 @@ namespace F1Encyclopedia.Data.EntityConfiguration.Tracks
         {
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+
             builder.Property(x => x.Name)
                 .IsRequired()
                 .HasMaxLength(75);

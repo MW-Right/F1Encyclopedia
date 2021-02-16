@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System;
 using System.Linq;
 using F1Encyclopedia.Data.Models.Results;
+using JetBrains.Annotations;
 
 namespace F1Encyclopedia.Data
 {
@@ -49,23 +50,6 @@ namespace F1Encyclopedia.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("Server=DESKTOP-RVN5OTQ;Database=F1Encyclopedia;Trusted_Connection=True;");
-        }
-
-        public bool Exists<T>(T entity) 
-            where T : class, new()
-        {
-            return Set<T>().Local.Any(e => 
-            {
-                foreach (var prop in typeof(T).GetProperties()) {
-                    if (e.GetType().GetProperty(prop.Name) == entity.GetType().GetProperty(prop.Name))
-                    {
-                        continue;
-                    }
-                    else
-                        return false;
-                }
-                return true;
-            });
         }
     }
 }

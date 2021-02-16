@@ -4,7 +4,7 @@ namespace F1Encyclopedia.Data.Models.Drivers
 {
     public class DriverInformation
     {
-        public int DriverInformationId { get; private set; }
+        public int Id { get; private set; }
 
         public int PersonId { get; set; }
         public Person Driver { get; set; }

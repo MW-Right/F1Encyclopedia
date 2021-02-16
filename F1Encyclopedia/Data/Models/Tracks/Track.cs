@@ -1,10 +1,11 @@
 ﻿using F1Encyclopedia.Data.Models.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace F1Encyclopedia.Data.Models.Tracks
 {
-    public class Track : F1Table
+    public class Track
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -17,42 +18,40 @@ namespace F1Encyclopedia.Data.Models.Tracks
         public int CountryId { get; set; }
         public Country Country { get; set; }
 
-        public Track() : base() { }
+        public Track() { }
 
-        public static bool CheckHeadersCorrect(List<string> headers, out string badHeader)
-        {
-            return CheckHeadersCorrect(headers, typeof(Track), out badHeader);
-        }
 
         public static Track FromCsv(string line, List<string> headers)
         {
             var values = line.Split(',');
-            var track = new Track();
-
-            var customTypeData = "";
-
-            var incompleteData = F1Table.FromCsv(values, headers, track, ref customTypeData);
-
-            if (customTypeData == "")
+            using (var db = new F1EncyclopediaContext())
             {
-                return incompleteData;
-            }
-            else
-            {
-                using (var db = new F1EncyclopediaContext())
+                if (values[3] == "UK")
                 {
-                    var country = db.Countries
-                        .Where(x => x.Name == customTypeData)
-                        .FirstOrDefault();
-
-                    if (country != null)
-                    {
-                        track.CountryId = country.Id;
-                    }
+                    values[3] = "United Kingdom";
                 }
+
+                var country = db.Countries.FirstOrDefault(x => x.Name == values[3]);
+
+                if (country == null)
+                {
+                    Console.WriteLine($"Could not find country with name: {values[3]}");
+                }
+
+                var track = new Track()
+                {
+                    Name = values[1],
+                    City = values[2],
+                    CountryId = country != null ? country.Id : 1,
+                    Lat = Convert.ToSingle(values[4]),
+                    Long = Convert.ToSingle(values[5]),
+                    Alt = Convert.ToInt16(values[6]),
+                    WikiUrl = values[7]
+                };
+
+                return track;
             }
 
-            return track;
         }
     }
 }

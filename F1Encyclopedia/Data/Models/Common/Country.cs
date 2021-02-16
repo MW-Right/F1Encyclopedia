@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace F1Encyclopedia.Data.Models.Common
 {
-    public class Country : F1Table
+    public class Country
     {
         public int Id { get; private set; }
         public string Name { get; set; }
@@ -19,21 +19,17 @@ namespace F1Encyclopedia.Data.Models.Common
             Nationality = nationality;
         }
 
-        public static bool CheckHeadersCorrect(List<string> headers, out string badHeader)
-        {
-            return F1Table.CheckHeadersCorrect(headers, typeof(Country), out badHeader);
-        }
-
-        public static Country FromCsv(string line, List<string> headers)
+        public static Country FromCsv(string line)
         {
             var values = line.Split(',');
-            var country = new Country();
+            var country = new Country()
+            {
+                Name = values[0],
+                Continent = values[1],
+                Nationality = values[2]
+            };
 
-            string customTypeData = "";
-
-            var incompleteData = F1Table.FromCsv(values, headers, country, ref customTypeData);
-
-            return incompleteData;
+            return country;
         }
     }
 }

@@ -10,6 +10,8 @@ namespace F1Encyclopedia.Data.EntityConfiguration.ConstructorTeams
         {
             builder.HasKey(x => x.Id);
 
+            builder.Property(x => x.Id).ValueGeneratedOnAdd();
+
             builder.HasOne(x => x.Employee)
                 .WithMany(x => x.Teams)
                 .OnDelete(DeleteBehavior.Restrict);
