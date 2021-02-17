@@ -58,6 +58,12 @@
     <Compile Remove="Migrations\20210210152211_UpdateConstructorAndPersonTables.Designer.cs" />
     <Compile Remove="Migrations\20210211170954_AddWikiToPerson.cs" />
     <Compile Remove="Migrations\20210211170954_AddWikiToPerson.Designer.cs" />
+    <Compile Remove="Migrations\20210217141951_AddWikiUrlToConstructors.cs" />
+    <Compile Remove="Migrations\20210217141951_AddWikiUrlToConstructors.Designer.cs" />
+    <Compile Remove="Migrations\20210217170414_Check.cs" />
+    <Compile Remove="Migrations\20210217170414_Check.Designer.cs" />
+    <Compile Remove="Migrations\20210217173448_check.cs" />
+    <Compile Remove="Migrations\20210217173448_check.Designer.cs" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

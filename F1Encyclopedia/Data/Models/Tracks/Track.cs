@@ -21,7 +21,7 @@ namespace F1Encyclopedia.Data.Models.Tracks
         public Track() { }
 
 
-        public static Track FromCsv(string line, List<string> headers)
+        public static Track FromCsv(string line)
         {
             var values = line.Split(',');
             using (var db = new F1EncyclopediaContext())
@@ -51,7 +51,21 @@ namespace F1Encyclopedia.Data.Models.Tracks
 
                 return track;
             }
+        }
 
+        /// <summary>
+        ///     When seeding the db using the ergast db csvs, the track ids are not sequential. Correction applied to keep referential accuracy.
+        /// </summary>
+        /// <param name="id">
+        ///     The Track identifier to check.
+        /// </param>
+        /// <returns>
+        ///     Corrected Track identifier.
+        /// </returns>
+        public static int TrackIdCorrection(int id)
+        {
+            // Ids are sequential in current data. Edit here if changing.
+            return id;
         }
     }
 }

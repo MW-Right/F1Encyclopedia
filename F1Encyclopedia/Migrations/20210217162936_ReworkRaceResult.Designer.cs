@@ -4,14 +4,16 @@ using F1Encyclopedia.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace F1Encyclopedia.Migrations
 {
     [DbContext(typeof(F1EncyclopediaContext))]
-    partial class F1EncyclopediaContextModelSnapshot : ModelSnapshot
+    [Migration("20210217162936_ReworkRaceResult")]
+    partial class ReworkRaceResult
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -273,22 +275,24 @@ namespace F1Encyclopedia.Migrations
                     b.Property<int>("DriverId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Lap")
-                        .HasColumnType("int");
-
                     b.Property<int>("Position")
                         .HasColumnType("int")
                         .HasMaxLength(2);
 
+                    b.Property<int?>("RaceResultId")
+                        .HasColumnType("int");
+
                     b.Property<int>("RaceWeekendId")
                         .HasColumnType("int");
 
-                    b.Property<long>("Time")
+                    b.Property<long>("TimeMillis")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DriverId");
+
+                    b.HasIndex("RaceResultId");
 
                     b.HasIndex("RaceWeekendId");
 
@@ -536,6 +540,10 @@ namespace F1Encyclopedia.Migrations
                         .HasForeignKey("DriverId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("F1Encyclopedia.Data.Models.Results.RaceResult", null)
+                        .WithMany("LapTimes")
+                        .HasForeignKey("RaceResultId");
 
                     b.HasOne("F1Encyclopedia.Data.Models.Common.RaceWeekend", "RaceWeekend")
                         .WithMany()

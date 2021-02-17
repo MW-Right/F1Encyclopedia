@@ -1,5 +1,6 @@
 ﻿using F1Encyclopedia.Data.Models.ConstructorTeams;
 using F1Encyclopedia.Data.Models.Drivers;
+using F1Encyclopedia.Data.Seeding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,36 +28,13 @@ namespace F1Encyclopedia.Data.Models.Common
         public List<DriverRating> DriverRatings { get; set; }
 
 
-        public static Person FromCsv(string line, List<string> headers)
+        public static Person FromCsv(string line)
         {
             var values = line.Split(',');
             
             using (var db = new F1EncyclopediaContext())
             {
-                switch (values[4])
-                {
-                    case "Rhodesian":
-                        {
-                            values[4] = "Zimbabwean";
-                            break;
-                        }
-                    case "East German":
-                        {
-                            values[4] = "German";
-                            break;
-                        }
-                    case "Argentine-Italian":
-                        {
-                            values[4] = "Argentine";
-                            break;
-                        }
-                    case "American-Italian":
-                        {
-                            values[4] = "American";
-                            break;
-                        }
-                    default: break;
-                }
+                values[4] = Seed.UpdateNationalities(values[4]);
 
                 var country = db.Countries
                     .Where(p => p.Nationality == values[4])
@@ -78,6 +56,26 @@ namespace F1Encyclopedia.Data.Models.Common
 
                 return person;
             }
+        }
+
+        /// <summary>
+        ///     When seeding the db using the ergast db csvs, the driver ids are not sequential. Correction applied to keep referential accuracy.
+        /// </summary>
+        /// <param name="id">
+        ///     The Driver identifier to check.
+        /// </param>
+        /// <returns>
+        ///     Corrected driver identifier.
+        /// </returns>
+        public static int DriverIdCorrection(string stringId)
+        {
+            var id = Convert.ToInt32(stringId);
+            switch (id)
+            {
+                case > 809:
+                    return id -= 1;
+            }
+            return id;
         }
     }
 }

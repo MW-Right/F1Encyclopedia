@@ -1,6 +1,7 @@
 ﻿using F1Encyclopedia.Data.Models.Results;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,15 @@ namespace F1Encyclopedia.Data.EntityConfiguration.Results
 
             builder.Property(x => x.Position)
                 .HasMaxLength(2);
+
+            builder.Property(x => x.Q1)
+                .HasConversion(new TimeSpanToTicksConverter());
+
+            builder.Property(x => x.Q2)
+                .HasConversion(new TimeSpanToTicksConverter());
+
+            builder.Property(x => x.Q3)
+                .HasConversion(new TimeSpanToTicksConverter());
         }
     }
 }

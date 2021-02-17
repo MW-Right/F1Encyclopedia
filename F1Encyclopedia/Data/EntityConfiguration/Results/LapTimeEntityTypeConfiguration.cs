@@ -1,6 +1,7 @@
 ﻿using F1Encyclopedia.Data.Models.Results;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace F1Encyclopedia.Data.EntityConfiguration.Results
 {
@@ -24,6 +25,9 @@ namespace F1Encyclopedia.Data.EntityConfiguration.Results
 
             builder.Property(x => x.Position)
                 .HasMaxLength(2);
+
+            builder.Property(x => x.Time)
+                .HasConversion(new TimeSpanToTicksConverter());
         }
     }
 }

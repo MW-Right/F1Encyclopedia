@@ -51,5 +51,12 @@ namespace F1Encyclopedia.Data
         {
             optionsBuilder.UseSqlServer("Server=DESKTOP-RVN5OTQ;Database=F1Encyclopedia;Trusted_Connection=True;");
         }
+
+        public void CleanTable(string tableName)
+        {
+            Database.ExecuteSqlRaw(
+                $"DELETE FROM {tableName} WHERE 1=1\n" +
+                $"DBCC CHECKIDENT ('[{tableName}]', RESEED, 0);");
+        }
     }
 }

@@ -451,7 +451,6 @@ driverId,forename,surname,dob,nationality,url
 450,Ernie,de Vos,01/07/1941,Dutch,http://en.wikipedia.org/wiki/Ernie_de_Vos
 451,Frank,Dochnal,08/10/1920,American,http://en.wikipedia.org/wiki/Frank_Dochnal
 452,Thomas,Monarch,03/09/1945,American,http://en.wikipedia.org/wiki/Talk:1963_Mexican_Grand_Prix#Who_was_Thomas_Monarch.3F
-842,Pierre,Gasly,07/02/1996,French,http://en.wikipedia.org/wiki/Pierre_Gasly
 453,Jackie,Lewis,01/11/1936,British,http://en.wikipedia.org/wiki/Jackie_Lewis
 454,Ricardo,Rodríguez,14/02/1942,Mexican,http://en.wikipedia.org/wiki/Ricardo_Rodr%C3%ADguez_(Formula_One)
 455,Wolfgang,Seidel,04/07/1926,German,http://en.wikipedia.org/wiki/Wolfgang_Seidel
@@ -840,6 +839,7 @@ driverId,forename,surname,dob,nationality,url
 839,Esteban,Ocon,17/09/1996,French,http://en.wikipedia.org/wiki/Esteban_Ocon
 840,Lance,Stroll,29/10/1998,Canadian,http://en.wikipedia.org/wiki/Lance_Stroll
 841,Antonio,Giovinazzi,14/12/1993,Italian,http://en.wikipedia.org/wiki/Antonio_Giovinazzi
+842,Pierre,Gasly,07/02/1996,French,http://en.wikipedia.org/wiki/Pierre_Gasly
 843,Brendon,Hartley,10/11/1989,New Zealander,http://en.wikipedia.org/wiki/Brendon_Hartley
 844,Charles,Leclerc,16/10/1997,Monegasque,http://en.wikipedia.org/wiki/Charles_Leclerc
 845,Sergey,Sirotkin,27/08/1995,Russian,http://en.wikipedia.org/wiki/Sergey_Sirotkin_(racing_driver)

@@ -4,14 +4,16 @@ using F1Encyclopedia.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace F1Encyclopedia.Migrations
 {
     [DbContext(typeof(F1EncyclopediaContext))]
-    partial class F1EncyclopediaContextModelSnapshot : ModelSnapshot
+    [Migration("20210217162041_AddStatusIdToRaceResults")]
+    partial class AddStatusIdToRaceResults
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -273,9 +275,6 @@ namespace F1Encyclopedia.Migrations
                     b.Property<int>("DriverId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Lap")
-                        .HasColumnType("int");
-
                     b.Property<int>("Position")
                         .HasColumnType("int")
                         .HasMaxLength(2);
@@ -283,7 +282,7 @@ namespace F1Encyclopedia.Migrations
                     b.Property<int>("RaceWeekendId")
                         .HasColumnType("int");
 
-                    b.Property<long>("Time")
+                    b.Property<long>("TimeMillis")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -348,6 +347,9 @@ namespace F1Encyclopedia.Migrations
                     b.Property<int>("DriverId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("FastestLapId")
+                        .HasColumnType("int");
+
                     b.Property<int>("GridPosition")
                         .HasColumnType("int");
 
@@ -366,7 +368,7 @@ namespace F1Encyclopedia.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<long?>("Time")
+                    b.Property<long>("Time")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -374,6 +376,8 @@ namespace F1Encyclopedia.Migrations
                     b.HasIndex("ConstructorId");
 
                     b.HasIndex("DriverId");
+
+                    b.HasIndex("FastestLapId");
 
                     b.HasIndex("RaceWeekendId");
 
@@ -578,6 +582,10 @@ namespace F1Encyclopedia.Migrations
                         .HasForeignKey("DriverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("F1Encyclopedia.Data.Models.Results.LapTime", "FastestLap")
+                        .WithMany()
+                        .HasForeignKey("FastestLapId");
 
                     b.HasOne("F1Encyclopedia.Data.Models.Common.RaceWeekend", "RaceWeekend")
                         .WithMany()

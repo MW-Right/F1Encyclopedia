@@ -27,7 +27,8 @@ namespace F1Encyclopedia.Data.Models.Common
             
             using(var db = new F1EncyclopediaContext())
             {
-                var track = db.Tracks.FirstOrDefault(x => x.Id == Convert.ToInt16(values[3]));
+                var correctedTrackId = Track.TrackIdCorrection(Convert.ToInt16(values[3]));
+                var track = db.Tracks.FirstOrDefault(x => x.Id == correctedTrackId);
 
                 if (track == null)
                 {
@@ -59,6 +60,35 @@ namespace F1Encyclopedia.Data.Models.Common
 
                 return raceWeekend;
             }
+        }
+
+        /// <summary>
+        ///     When seeding the db using the ergast db CSVs, the RaceWeekend ids are not sequential. Correction applied to keep referential accuracy.
+        /// </summary>
+        /// <param name="id">
+        ///     The RaceWeekend identifier to check.
+        /// </param>
+        /// <returns>
+        ///     Corrected RaceWeekend identifier.
+        /// </returns>
+        public static int RaceWeekendIdCorrection(string stringId)
+        {
+            var id = Convert.ToInt32(stringId);
+
+            switch(id)
+            {
+                case > 1047:
+                    return id -= 16;
+                case > 945:
+                    return id -= 13;
+                case > 918:
+                    return id -= 9;
+                case > 888:
+                    return id -= 2;
+                case > 840:
+                    return id -= 1;
+            }
+            return id;
         }
     }
 }
