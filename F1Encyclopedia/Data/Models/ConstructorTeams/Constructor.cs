@@ -17,30 +17,27 @@ namespace F1Encyclopedia.Data.Models.ConstructorTeams
         public List<Colour> TeamColours { get; set; }
         public List<PersonRole> Staff { get; set; }
 
-        public static Constructor FromCsv(string line)
+        public static Constructor FromCsv(string line, F1EncyclopediaContext db)
         {
             var values = line.Split(',');
 
-            using (var db = new F1EncyclopediaContext())
+            values[2] = Seed.UpdateNationalities(values[2]);
+
+            var country = db.Countries.FirstOrDefault(x => x.Nationality == values[2]);
+
+            if (country == null)
             {
-                values[2] = Seed.UpdateNationalities(values[2]);
-
-                var country = db.Countries.FirstOrDefault(x => x.Nationality == values[2]);
-
-                if (country == null)
-                {
-                    Console.WriteLine($"Country not found with nationality: {values[2]}");   
-                }
-
-                var constructor = new Constructor()
-                {
-                    Name = values[1],
-                    CountryId = country != null ? country.Id : 1,
-                    WikiUrl = values[3]
-                };
-
-                return constructor;
+                Console.WriteLine($"Country not found with nationality: {values[2]}");
             }
+
+            var constructor = new Constructor()
+            {
+                Name = values[1],
+                CountryId = country != null ? country.Id : 1,
+                WikiUrl = values[3]
+            };
+
+            return constructor;
         }
 
 

@@ -12,7 +12,7 @@ namespace F1Encyclopedia.Data.Models.Results
         public int Id { get; set; }
         public int GridPosition { get; set; }
         public int Position { get; set; }
-        public int Points { get; set; }
+        public float Points { get; set; }
         public int Laps { get; set; }
         public TimeSpan? Time { get; set; }
 
@@ -52,7 +52,7 @@ namespace F1Encyclopedia.Data.Models.Results
             {
                 GridPosition = Convert.ToInt32(values[5]),
                 Position = Convert.ToInt32(values[8]),
-                Points = Convert.ToInt32(values[9]),
+                Points = Convert.ToSingle(values[9]),
                 Laps = Convert.ToInt32(values[10]),
                 Time = GetTimeSpan(values[12]),
                 RaceWeekendId = raceWeekend != null ? raceWeekend.Id : 1,

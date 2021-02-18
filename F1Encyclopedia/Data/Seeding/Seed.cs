@@ -7,7 +7,7 @@ namespace F1Encyclopedia.Data.Seeding
 {
     public interface Seed
     {
-        public static string baseLocation = "..\\..\\..\\..\\DataTrawl\\";
+        public static string baseLocation = "..\\DataTrawl\\";
 
         public static void PropertyException(string header)
         {
@@ -41,6 +41,36 @@ namespace F1Encyclopedia.Data.Seeding
                 default: break;
             }
             return nat;
+        }
+
+        public static void EnsureCleanDb()
+        {
+            using (var context = new F1EncyclopediaContext())
+            {
+                context.CleanTable("RaceResults");
+                context.CleanTable("LapTimes");
+                context.CleanTable("RaceStatuses");
+                context.CleanTable("Qualifyings");
+                context.CleanTable("Constructors");
+                context.CleanTable("RaceWeekends");
+                context.CleanTable("Persons");
+                context.CleanTable("Tracks");
+                context.CleanTable("Countries");
+            }
+        }
+
+        public static void SeedDb()
+        {
+            EnsureCleanDb();
+            SeedCountries.ProcessErgastCountries();
+            SeedTracks.ProcessErgastTracks();
+            SeedDrivers.ProcessErgastDrivers();
+            SeedRaceWeekends.ProcessErgastRaceWeekends();
+            SeedConstructors.ProcessErgastConstructors();
+            SeedQualifyingResults.ProcessErgastQualifying();
+            SeedRaceStatuses.ProcessErgastRaceStatus();
+            SeedLapTimes.ProcessErgastLapTimes();
+            SeedRaceResults.ProcessErgastRaceResults();
         }
     }
 }

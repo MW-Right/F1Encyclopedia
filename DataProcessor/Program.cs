@@ -13,6 +13,7 @@ namespace DataProcessor
 {
     class Program
     {
+        public static string baseLocation = "..\\..\\..\\..\\DataTrawl\\";
         static void Main(string[] args)
         {
             using (var context = new F1EncyclopediaContext())
@@ -52,7 +53,8 @@ namespace DataProcessor
 
         public static void ProcessErgastCountries()
         {
-            var fileLocation = Seed.baseLocation + "countries.csv";
+            Console.WriteLine("------+====== Countries ======+------");
+            var fileLocation = baseLocation + "countries.csv";
             var counter = 0;
             var length = 0;
             var docOpen = true;
@@ -67,20 +69,18 @@ namespace DataProcessor
                     {
                         using (var sr = new StreamReader(fileLocation))
                         {
-                            var dataArr = File.ReadAllLines(fileLocation);
-                            
-                            Console.WriteLine("Beginning processing.\n");
-                            length = dataArr.Length;
+                            var dataArr = File.ReadAllLines(fileLocation).Skip(1);
 
-                            data = File.ReadAllLines(fileLocation)
-                                .Skip(1)
-                                .Select(x =>
-                                {
-                                    counter++;
-                                    Console.Write("\rProcessed: {0} ({1}%)", counter, counter * 100/ length);
-                                    return Country.FromCsv(x);
-                                })
-                                .ToList();
+                            Console.WriteLine("Beginning processing.");
+                            length = dataArr.Count();
+
+                            foreach (var line in dataArr)
+                            {
+                                counter++;
+                                Console.Write("\rProcessed: {0} ({1}%)", counter, counter * 100 / length);
+                                data.Add(Country.FromCsv(line));
+                            }
+
                             docOpen = false;
                         }
                     }
@@ -93,7 +93,7 @@ namespace DataProcessor
                 }
 
                 counter = 0;
-                Console.WriteLine("Completed processing. Starting add.");
+                Console.WriteLine("\nCompleted processing. Starting add.");
 
                 foreach (var c in data)
                 {
@@ -101,22 +101,23 @@ namespace DataProcessor
                     db.Countries.AddIfNotExists(c, x => x.Name == c.Name);
                     Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
                 }
-                Console.WriteLine("Entities added and tracked, saving changes...");
+                Console.WriteLine("\nEntities added and tracked, saving changes...");
                 db.SaveChanges();
-                Console.WriteLine("Completed.");
+                Console.WriteLine("Completed. \n\n\n\n");
             }
         }
 
         public static void ProcessErgastTracks()
         {
-            var fileLocation = Seed.baseLocation + "circuits.csv";
+            Console.WriteLine("------+====== Tracks ======+------");
+            var fileLocation = baseLocation + "circuits.csv";
             var counter = 0;
             var length = 0;
             var docOpen = true;
 
             var data = new List<Track>();
 
-            using (var db = new F1EncyclopediaContext()) 
+            using (var db = new F1EncyclopediaContext())
             {
                 while (docOpen)
                 {
@@ -125,20 +126,17 @@ namespace DataProcessor
                         // Checks file is currently open.
                         using (var sr = new StreamReader(fileLocation))
                         {
-                            var dataArr = File.ReadAllLines(fileLocation);
+                            var dataArr = File.ReadAllLines(fileLocation).Skip(1);
 
-                            Console.WriteLine("Beginning processing.\n");
-                            length = dataArr.Length;
+                            Console.WriteLine("Beginning processing.");
+                            length = dataArr.Count();
 
-                            data = File.ReadAllLines(fileLocation)
-                                .Skip(1)
-                                .Select(x =>
-                                {
-                                    counter++;
-                                    Console.Write("\rProcessed: {0} ({1}%)", counter, counter * 100 / length);
-                                    return Track.FromCsv(x);
-                                })
-                                .ToList();
+                            foreach (var line in dataArr)
+                            {
+                                counter++;
+                                Console.Write("\rProcessed: {0} ({1}%)", counter, counter * 100 / length);
+                                data.Add(Track.FromCsv(line));
+                            }
 
                             docOpen = false;
                         }
@@ -152,7 +150,7 @@ namespace DataProcessor
                 }
 
                 counter = 0;
-                Console.WriteLine("Completed processing. Starting add.");
+                Console.WriteLine("\nCompleted processing. Starting add.");
 
                 foreach (var t in data)
                 {
@@ -160,15 +158,16 @@ namespace DataProcessor
                     db.Tracks.AddIfNotExists(t, x => x.Name == t.Name);
                     Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
                 }
-                Console.WriteLine("Entities added and tracked. Saving changes...");
+                Console.WriteLine("\nEntities added and tracked. Saving changes...");
                 db.SaveChanges();
-                Console.WriteLine("Completed");
+                Console.WriteLine("Completed.\n\n\n\n");
             }
         }
 
         public static void ProcessErgastDrivers()
         {
-            var fileLocation = Seed.baseLocation + "drivers.csv";
+            Console.WriteLine("------+====== Drivers  ======+------");
+            var fileLocation = baseLocation + "drivers.csv";
             var counter = 0;
             var length = 0;
             var docOpen = true;
@@ -177,27 +176,24 @@ namespace DataProcessor
 
             using (var db = new F1EncyclopediaContext())
             {
-                while(docOpen)
+                while (docOpen)
                 {
                     try
                     {
                         // Checks file is currently open.
                         using (var sr = new StreamReader(fileLocation))
                         {
-                            var dataArr = File.ReadAllLines(fileLocation);
+                            var dataArr = File.ReadAllLines(fileLocation).Skip(1);
 
-                            Console.WriteLine("Beginning processing.\n");
-                            length = dataArr.Length;
+                            Console.WriteLine("Beginning processing.");
+                            length = dataArr.Count();
 
-                            data = File.ReadAllLines(fileLocation)
-                                .Skip(1)
-                                .Select(x => 
-                                {
-                                    counter++;
-                                    Console.Write("\rProcessed: {0} ({1}%)", counter, counter * 100 / length);
-                                    return Person.FromCsv(x); 
-                                })
-                                .ToList();
+                            foreach (var line in dataArr)
+                            {
+                                counter++;
+                                Console.Write("\rProcessed: {0} ({1}%)", counter, counter * 100 / length);
+                                data.Add(Person.FromCsv(line, db));
+                            }
 
                             docOpen = false;
                         }
@@ -211,7 +207,7 @@ namespace DataProcessor
                 }
 
                 counter = 0;
-                Console.WriteLine("Completed processing. Starting add.");
+                Console.WriteLine("\nCompleted processing. Starting add.");
 
                 foreach (var d in data)
                 {
@@ -219,135 +215,290 @@ namespace DataProcessor
                     db.Persons.AddIfNotExists(d, x => x.FirstName == d.FirstName && x.LastName == d.LastName);
                     Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
                 }
-                Console.WriteLine("Entities added and tracked. Saving changes...");
+                Console.WriteLine("\nEntities added and tracked. Saving changes...");
                 db.SaveChanges();
-                Console.WriteLine("Completed.");
+                Console.WriteLine("Completed.\n\n\n\n");
             }
         }
 
         public static void ProcessErgastRaceWeekends()
         {
-            string fileLocation = Seed.baseLocation + "races.csv";
+            Console.WriteLine("------+====== Race weekends  ======+------");
+            string fileLocation = baseLocation + "races.csv";
+            var counter = 0;
+            var length = 0;
+            var docOpen = true;
+
             var data = new List<RaceWeekend>();
 
-            // Checks file is currently open.
-            using (var sr = new StreamReader(fileLocation))
-            {
-                data = File.ReadAllLines(fileLocation)
-                    .Skip(1)
-                    .Select(x => RaceWeekend.FromCsv(x))
-                    .ToList();
-            }
 
             using (var db = new F1EncyclopediaContext())
             {
+                while (docOpen)
+                {
+                    try
+                    {
+                        // Checks file is currently open.
+                        using (var sr = new StreamReader(fileLocation))
+                        {
+                            var dataArr = File.ReadAllLines(fileLocation).Skip(1);
+                            Console.WriteLine("Beginning processing.");
+                            length = dataArr.Count();
+
+                            foreach (var line in dataArr)
+                            {
+                                counter++;
+                                Console.Write("\rProcessed: {0} ({1}%)", counter, counter * 100 / length);
+                                data.Add(RaceWeekend.FromCsv(line));
+                            }
+                            docOpen = false;
+                        }
+                    }
+                    catch (IOException e)
+                    {
+                        Console.Write(e.Message);
+                        Console.WriteLine("\rCSV file is open in another application. Please close to continue.");
+                        System.Threading.Thread.Sleep(2000);
+                    }
+                }
+
+                counter = 0;
+                Console.WriteLine("\nCompleted processing. Starting add.");
+
                 foreach (var rw in data)
                 {
+                    counter++;
                     db.RaceWeekends.AddIfNotExists(rw, x => x.Name == rw.Name && x.Round == rw.Round && x.Year == rw.Year);
+                    Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
                 }
+                Console.WriteLine("\nEntities added and tracked, saving changes...");
                 db.SaveChanges();
+                Console.WriteLine("Completed.\n\n\n\n");
             }
         }
 
         public static void ProcessErgastQualifying()
         {
-            string fileLocation = Seed.baseLocation + "qualifying.csv";
+            Console.WriteLine("------+====== Qualifying ======+------");
+            string fileLocation = baseLocation + "qualifying.csv";
             var data = new List<Qualifying>();
-
-            // Checks file is currently open.
-            using (var sr = new StreamReader(fileLocation))
-            {
-                data = File.ReadAllLines(fileLocation)
-                    .Skip(1)
-                    .Select(x => Qualifying.FromCsv(x))
-                    .ToList();
-            }
+            var docOpen = true;
+            var counter = 0;
+            var length = 0;
 
             using (var db = new F1EncyclopediaContext())
             {
+                while (docOpen)
+                {
+                    try
+                    {
+                        // Checks file is currently open.
+                        using (var sr = new StreamReader(fileLocation))
+                        {
+                            var dataArr = File.ReadAllLines(fileLocation).Skip(1);
+
+                            Console.WriteLine("Beginning processing.");
+                            length = dataArr.Count();
+
+                            foreach (var line in dataArr)
+                            {
+                                counter++;
+                                Console.Write("\rProcessed: {0} ({1}%)", counter, counter * 100 / length);
+                                data.Add(Qualifying.FromCsv(line, db));
+                            }
+                        }
+                        docOpen = false;
+                    }
+                    catch (IOException e)
+                    {
+                        Console.Write(e.Message);
+                        Console.WriteLine("\rLap_times.csv file is open in another location. Please close to continue.");
+                        System.Threading.Thread.Sleep(2000);
+                    }
+                }
+
+                counter = 0;
+                Console.WriteLine("\nCompleted processing data. Starting add.");
+
                 foreach (var q in data)
                 {
+                    counter++;
                     db.Qualifyings.AddIfNotExists(q, x => x.DriverId == q.DriverId && x.RaceWeekendId == q.RaceWeekendId);
+                    Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
                 }
+                Console.WriteLine("\nEntities added and tracked, saving changes...");
                 db.SaveChanges();
+                Console.WriteLine("Completed.\n\n\n\n");
             }
         }
 
         public static void ProcessErgastConstructors()
         {
-            string fileLocation = Seed.baseLocation + "constructors.csv";
+            Console.WriteLine("------+====== Constructors ======+------");
+            string fileLocation = baseLocation + "constructors.csv";
             var data = new List<Constructor>();
-
-            // Checks file is currently open.
-            using (var sr = new StreamReader(fileLocation))
-            {
-                data = File.ReadAllLines(fileLocation)
-                    .Skip(1)
-                    .Select(x => Constructor.FromCsv(x))
-                    .ToList();
-            }
+            var docOpen = true;
+            var counter = 0;
+            var length = 0;
 
             using (var db = new F1EncyclopediaContext())
             {
+                while (docOpen)
+                {
+                    try
+                    {
+                        // Checks file is currently open.
+                        using (var sr = new StreamReader(fileLocation))
+                        {
+                            var dataArr = File.ReadAllLines(fileLocation).Skip(1);
+                            Console.WriteLine("Beginning processing.");
+                            length = dataArr.Count();
+
+                            foreach (var line in dataArr)
+                            {
+                                counter++;
+                                Console.Write("\rProcessed: {0} ({1}%)", counter, counter * 100 / length);
+                                data.Add(Constructor.FromCsv(line, db));
+                            }
+                        }
+                        docOpen = false;
+                    }
+                    catch (IOException e)
+                    {
+                        Console.Write(e.Message);
+                        Console.WriteLine("\rConstructors.csv is open in another location. Please close to continue.");
+                        System.Threading.Thread.Sleep(2000);
+                    }
+                }
+
+                counter = 0;
+                Console.WriteLine("\nCompleted processing data. Starting add.");
+
                 foreach (var c in data)
                 {
+                    counter++;
                     db.Constructors.AddIfNotExists(c, x => x.Name == c.Name);
+                    Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
                 }
+                Console.WriteLine("\nEntities added and tracked, saving changes...");
                 db.SaveChanges();
+                Console.WriteLine("Completed.\n\n\n\n");
             }
         }
 
         public static void ProcessErgastRaceStatus()
         {
-            string fileLocation = Seed.baseLocation + "status.csv";
+            Console.WriteLine("------+====== Race statuses ======+------");
+            string fileLocation = baseLocation + "status.csv";
             var data = new List<RaceStatus>();
-
-            // Checks file is currently open.
-            using (var sr = new StreamReader(fileLocation))
-            {
-                data = File.ReadAllLines(fileLocation)
-                    .Skip(1)
-                    .Select(x => RaceStatus.FromCsv(x))
-                    .ToList();
-            }
+            var docOpen = true;
+            var counter = 0;
+            var length = 0;
 
             using (var db = new F1EncyclopediaContext())
             {
-                foreach (var rs in data)
+                while (docOpen)
                 {
-                    db.RaceStatuses.AddIfNotExists(rs, x => x.Status == rs.Status);
+                    try
+                    {
+                        using (var sr = new StreamReader(fileLocation))
+                        {
+                            var dataArr = File.ReadAllLines(fileLocation).Skip(1);
+                            Console.WriteLine("Beginning processing.");
+                            length = dataArr.Count();
+
+                            foreach (var line in dataArr)
+                            {
+                                counter++;
+                                Console.Write("\rProcessed: {0} ({1}%)", counter, counter * 100 / length);
+                                data.Add(RaceStatus.FromCsv(line));
+                            }
+                        }
+                        docOpen = false;
+                    }
+                    catch (IOException e)
+                    {
+                        Console.Write(e.Message);
+                        Console.WriteLine("\rstatus.csv is open in another location. Please close to continue.");
+                        System.Threading.Thread.Sleep(2000);
+                    }
                 }
+
+                counter = 0;
+                Console.WriteLine("\nCompleted processing data. Starting add.");
+
+                foreach (var c in data)
+                {
+                    counter++;
+                    db.RaceStatuses.AddIfNotExists(c, x => x.Status == c.Status);
+                    Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                }
+                Console.WriteLine("\nEntities added and tracked, saving changes...");
                 db.SaveChanges();
+                Console.WriteLine("Completed.\n\n\n\n");
             }
         }
 
         public static void ProcessErgastRaceResults()
         {
-            string fileLocation = Seed.baseLocation + "results.csv";
+            Console.WriteLine("------+====== Race Results ======+------");
+            string fileLocation = baseLocation + "results.csv";
             var data = new List<RaceResult>();
+            var docOpen = true;
+            var length = 0;
+            var counter = 0;
 
             using (var db = new F1EncyclopediaContext())
             {
-                using (var sr = new StreamReader(fileLocation))
+                while (docOpen)
                 {
-                    data = File.ReadAllLines(fileLocation)
-                        .Skip(1)
-                        .Select(x => RaceResult.FromCsv(x, db))
-                        .ToList();
+                    try
+                    {
+                        // Checks file is currently open.
+                        using (var sr = new StreamReader(fileLocation))
+                        {
+                            var dataArr = File.ReadAllLines(fileLocation).Skip(1);
+                            Console.WriteLine("Beginning processing.");
+                            length = dataArr.Count();
+
+                            foreach (var line in dataArr)
+                            {
+                                counter++;
+                                Console.Write("\rProcessed: {0} ({1}%)", counter, counter * 100 / length);
+                                data.Add(RaceResult.FromCsv(line, db));
+                            }
+                        }
+                        docOpen = false;
+                    }
+                    catch (IOException e)
+                    {
+                        Console.Write(e.Message);
+                        Console.WriteLine("\rConstructors.csv is open in another location. Please close to continue.");
+                        System.Threading.Thread.Sleep(2000);
+                    }
                 }
 
-                foreach (var rr in data)
+                counter = 0;
+                Console.WriteLine("\nCompleted processing data. Starting add.");
+
+                foreach (var c in data)
                 {
-                    db.RaceResults.AddIfNotExists(rr,
-                        x => x.RaceWeekendId == rr.RaceWeekendId && x.DriverId == rr.DriverId);
+                    counter++;
+                    db.RaceResults.AddIfNotExists(c, x =>
+                        x.RaceWeekendId == c.RaceWeekendId &&
+                        x.DriverId == c.DriverId);
+                    Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
                 }
+                Console.WriteLine("\nEntities added and tracked, saving changes...");
                 db.SaveChanges();
+                Console.WriteLine("Completed.\n\n\n\n");
             }
         }
 
         public static void ProcessErgastLapTimes()
         {
-            string fileLocation = Seed.baseLocation + "lap_times.csv";
+            Console.WriteLine("------+====== Lap Times ======+------");
+            string fileLocation = baseLocation + "lap_times.csv";
             var data = new List<LapTime>();
             var docOpen = true;
             var counter = 0;
@@ -359,42 +510,45 @@ namespace DataProcessor
                 {
                     try
                     {
+                        // Checks file is currently open.
                         using (var sr = new StreamReader(fileLocation))
                         {
-                            var fileArr = File.ReadAllLines(fileLocation);
-                            length = fileArr.Length;
-                            data = fileArr.Skip(1)
-                                .Select(x =>
-                                {
-                                    Console.Write("\rProcessed: {0}", counter, counter * 100 / length);
-                                    return LapTime.FromCsv(x, db);
-                                })
-                                .ToList();
+                            var dataArr = File.ReadAllLines(fileLocation).Skip(1);
+                            Console.WriteLine("Beginning processing.");
+                            length = dataArr.Count();
+
+                            foreach (var line in dataArr)
+                            {
+                                counter++;
+                                Console.Write("\rProcessed: {0} ({1}%)", counter, counter * 100 / length);
+                                data.Add(LapTime.FromCsv(line, db));
+                            }
                         }
                         docOpen = false;
                     }
                     catch (IOException e)
                     {
-                        docOpen = true;
-                        Console.WriteLine("CSV file is open in another application. Please close to continue.");
+                        Console.Write(e.Message);
+                        Console.WriteLine("\rCSV file is open in another application. Please close to continue.");
                         System.Threading.Thread.Sleep(2000);
                     }
                 }
 
                 counter = 0;
-                Console.WriteLine("Completed processing data. Starting add.\n");
+                Console.WriteLine("\nCompleted processing data. Starting add.");
 
                 foreach (var lt in data)
                 {
+                    counter++;
                     db.LapTimes.AddIfNotExists(lt, x =>
                         x.RaceWeekendId == lt.RaceWeekendId &&
                         x.DriverId == lt.DriverId &&
                         x.Lap == lt.Lap);
-                    Console.Write("\rAdded: {0}", counter += 1);
+                    Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
                 }
-                Console.WriteLine("Entities added and tracked, saving changes...");
+                Console.WriteLine("\nEntities added and tracked, saving changes...");
                 db.SaveChanges();
-                Console.WriteLine("Completed.");
+                Console.WriteLine("Completed.\n\n\n\n");
             }
         }
 
@@ -402,7 +556,7 @@ namespace DataProcessor
         {
             throw new Exception($"Header: {header} was not found on object, please check the csv or add a new migration to add the new column to the db.");
         }
-        
+
         // Redundant requests to Ergast API, requested the csv data.
         //public static async Task FetchDriverData(int season)
         //{
@@ -416,7 +570,7 @@ namespace DataProcessor
         //            {
         //                response.EnsureSuccessStatusCode();
         //                var responseBody = await response.Content.ReadAsStringAsync();
-                        
+
         //            }
         //        }
         //        catch(Exception e)

@@ -1,4 +1,4 @@
-﻿using F1Encyclopedia.Data.Models.Common;
+﻿using F1Encyclopedia.Data.Models.Results;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,17 +8,16 @@ using System.Threading.Tasks;
 
 namespace F1Encyclopedia.Data.Seeding
 {
-    public static class SeedCountries
+    public class SeedRaceResults
     {
-        public static void ProcessErgastCountries()
+        public static void ProcessErgastRaceResults()
         {
-            Debug.WriteLine("------+====== Countries ======+------");
-            var fileLocation = Seed.baseLocation + "countries.csv";
-            var counter = 0;
-            var length = 0;
+            Debug.WriteLine("------+====== Race Results ======+------");
+            string fileLocation = Seed.baseLocation + "results.csv";
+            var data = new List<RaceResult>();
             var docOpen = true;
-
-            var data = new List<Country>();
+            var length = 0;
+            var counter = 0;
 
             using (var db = new F1EncyclopediaContext())
             {
@@ -26,47 +25,48 @@ namespace F1Encyclopedia.Data.Seeding
                 {
                     try
                     {
+                        // Checks file is currently open.
                         using (var sr = new StreamReader(fileLocation))
                         {
                             var dataArr = File.ReadAllLines(fileLocation).Skip(1);
-
                             Debug.WriteLine("Beginning processing.");
                             length = dataArr.Count();
 
                             foreach (var line in dataArr)
                             {
                                 counter++;
-                                if (counter % 10 == 0)
+                                if (counter % 10000 == 0)
                                     Debug.Write($"\rProcessed: {counter} ({counter * 100 / length}%)");
-
-                                data.Add(Country.FromCsv(line));
+                                data.Add(RaceResult.FromCsv(line, db));
                             }
-
-                            docOpen = false;
                         }
+                        docOpen = false;
                     }
                     catch (IOException e)
                     {
                         Debug.Write(e.Message);
-                        Debug.WriteLine("\rCSV file is open in another application. Please close to continue.");
+                        Debug.WriteLine("\rConstructors.csv is open in another location. Please close to continue.");
                         System.Threading.Thread.Sleep(2000);
                     }
                 }
 
                 counter = 0;
-                Debug.WriteLine("\nCompleted processing. Starting add.");
+                Debug.WriteLine("\nCompleted processing data. Starting add.");
 
                 foreach (var c in data)
                 {
                     counter++;
-                    db.Countries.AddIfNotExists(c, x => x.Name == c.Name);
-                    if (counter % 10 == 0)
+                    db.RaceResults.AddIfNotExists(c, x =>
+                        x.RaceWeekendId == c.RaceWeekendId &&
+                        x.DriverId == c.DriverId);
+                    if (counter % 10000 == 0)
                         Debug.Write($"\rAdded: {counter} ({counter * 100 / length}%)");
                 }
                 Debug.WriteLine("\nEntities added and tracked, saving changes...");
                 db.SaveChanges();
-                Debug.WriteLine("Completed. \n\n\n\n");
+                Debug.WriteLine("Completed.\n\n\n\n");
             }
         }
+
     }
 }

@@ -22,8 +22,22 @@ namespace F1Encyclopedia.Data.Models.Common
         public static RaceWeekend FromCsv(string line)
         {
             var values = line.Split(',');
-            var dateParts = values[5].Replace("\"", "").Split('-');
-            var timeParts = values[6].Replace("\"", "").Split(':');
+            var dateParts = (values[5].Contains('-') ? 
+                    values[5].Replace("\"", "").Split('-') :
+                    values[5].Replace("\"", "").Split('/'))
+                .Select(x => Convert.ToInt32(x))
+                .ToList();
+
+            var yearIndex = dateParts.IndexOf(dateParts.Where(x => x.ToString().Length == 4).FirstOrDefault());
+
+            var timePartStrings = values[6].Replace("\"", "")
+                .Split(':')
+                .ToList();
+
+            var timeParts = new List<int>();
+
+            if (timeParts.Count() == 3)
+                timeParts = timePartStrings.Select(x => Convert.ToInt32(x)).ToList();
             
             using(var db = new F1EncyclopediaContext())
             {
@@ -35,26 +49,32 @@ namespace F1Encyclopedia.Data.Models.Common
                     Console.WriteLine($"Could not find Track with Id: {values[3]}");
                 }
 
+                var date = new DateTime();
+
+                if (timeParts.Count() == 3)
+                {
+                    if (yearIndex == 2)
+                        date = new DateTime(dateParts[2], dateParts[1], dateParts[0],
+                            timeParts[0], timeParts[1], timeParts[2]);
+                    else
+                        date = new DateTime(dateParts[0],dateParts[1],dateParts[2],
+                            timeParts[0],timeParts[1],timeParts[2]);
+                }
+                else
+                {
+                    if (yearIndex == 2)
+                        date = new DateTime(dateParts[2],dateParts[1],dateParts[0]);
+                    else
+                        date = new DateTime(dateParts[0],dateParts[1],dateParts[2]);
+                }
+
                 var raceWeekend = new RaceWeekend
                 {
                     Year = Convert.ToInt16(values[1]),
                     Round = Convert.ToInt16(values[2]),
                     TrackId = track != null ? track.Id : 1,
                     Name = values[4].Replace("\"", ""),
-                    Date = timeParts.Length == 3 ?
-                        new DateTime(
-                            Convert.ToInt16(dateParts[0]),
-                            Convert.ToInt16(dateParts[1]),
-                            Convert.ToInt16(dateParts[2]),
-                            Convert.ToInt16(timeParts[0]),
-                            Convert.ToInt16(timeParts[1]),
-                            Convert.ToInt16(timeParts[2])
-                            ) :
-                        new DateTime(
-                            Convert.ToInt16(dateParts[0]),
-                            Convert.ToInt16(dateParts[1]),
-                            Convert.ToInt16(dateParts[2])
-                            ),
+                    Date = date,
                     RaceWiki = values[7].Replace("\"", "")
                 };
 

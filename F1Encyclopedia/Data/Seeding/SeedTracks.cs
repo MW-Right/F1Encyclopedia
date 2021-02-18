@@ -1,4 +1,4 @@
-﻿using F1Encyclopedia.Data.Models.Common;
+﻿using F1Encyclopedia.Data.Models.Tracks;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace F1Encyclopedia.Data.Seeding
 {
-    public static class SeedCountries
+    public static class SeedTracks
     {
-        public static void ProcessErgastCountries()
+        public static void ProcessErgastTracks()
         {
-            Debug.WriteLine("------+====== Countries ======+------");
-            var fileLocation = Seed.baseLocation + "countries.csv";
+            Debug.WriteLine("------+====== Tracks ======+------");
+            var fileLocation = Seed.baseLocation + "circuits.csv";
             var counter = 0;
             var length = 0;
             var docOpen = true;
 
-            var data = new List<Country>();
+            var data = new List<Track>();
 
             using (var db = new F1EncyclopediaContext())
             {
@@ -26,6 +26,7 @@ namespace F1Encyclopedia.Data.Seeding
                 {
                     try
                     {
+                        // Checks file is currently open.
                         using (var sr = new StreamReader(fileLocation))
                         {
                             var dataArr = File.ReadAllLines(fileLocation).Skip(1);
@@ -38,8 +39,7 @@ namespace F1Encyclopedia.Data.Seeding
                                 counter++;
                                 if (counter % 10 == 0)
                                     Debug.Write($"\rProcessed: {counter} ({counter * 100 / length}%)");
-
-                                data.Add(Country.FromCsv(line));
+                                data.Add(Track.FromCsv(line));
                             }
 
                             docOpen = false;
@@ -56,16 +56,16 @@ namespace F1Encyclopedia.Data.Seeding
                 counter = 0;
                 Debug.WriteLine("\nCompleted processing. Starting add.");
 
-                foreach (var c in data)
+                foreach (var t in data)
                 {
                     counter++;
-                    db.Countries.AddIfNotExists(c, x => x.Name == c.Name);
+                    db.Tracks.AddIfNotExists(t, x => x.Name == t.Name);
                     if (counter % 10 == 0)
                         Debug.Write($"\rAdded: {counter} ({counter * 100 / length}%)");
                 }
-                Debug.WriteLine("\nEntities added and tracked, saving changes...");
+                Debug.WriteLine("\nEntities added and tracked. Saving changes...");
                 db.SaveChanges();
-                Debug.WriteLine("Completed. \n\n\n\n");
+                Debug.WriteLine("Completed.\n\n\n\n");
             }
         }
     }

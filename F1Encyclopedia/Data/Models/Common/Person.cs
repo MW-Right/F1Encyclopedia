@@ -23,39 +23,36 @@ namespace F1Encyclopedia.Data.Models.Common
 
         public int? DriverInformationId { get; set; }
         public DriverInformation DriverInformation { get; set; }
-        
+
         public List<PersonRole> Teams { get; set; }
         public List<DriverRating> DriverRatings { get; set; }
 
 
-        public static Person FromCsv(string line)
+        public static Person FromCsv(string line, F1EncyclopediaContext db)
         {
             var values = line.Split(',');
-            
-            using (var db = new F1EncyclopediaContext())
+
+            values[4] = Seed.UpdateNationalities(values[4]);
+
+            var country = db.Countries
+                .Where(p => p.Nationality == values[4])
+                .FirstOrDefault();
+
+            if (country == null)
             {
-                values[4] = Seed.UpdateNationalities(values[4]);
-
-                var country = db.Countries
-                    .Where(p => p.Nationality == values[4])
-                    .FirstOrDefault();
-
-                if (country == null)
-                {
-                    Console.WriteLine($"Country not found from nationality: {values[4]}");
-                }
-
-                var person = new Person()
-                {
-                    FirstName = values[1],
-                    LastName = values[2],
-                    DoB = DateTime.Parse(values[3]),
-                    CountryId = country != null ? country.Id : 1,
-                    WikiUrl = values[5]
-                };
-
-                return person;
+                Console.WriteLine($"Country not found from nationality: {values[4]}");
             }
+
+            var person = new Person()
+            {
+                FirstName = values[1],
+                LastName = values[2],
+                DoB = DateTime.Parse(values[3]),
+                CountryId = country != null ? country.Id : 1,
+                WikiUrl = values[5]
+            };
+
+            return person;
         }
 
         /// <summary>
