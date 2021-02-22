@@ -1,8 +1,7 @@
 ﻿using F1Encyclopedia.Data.Models.Common;
+using F1Encyclopedia.Data.Models.Drivers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace F1Encyclopedia.Data.Models.Results
 {
@@ -12,7 +11,7 @@ namespace F1Encyclopedia.Data.Models.Results
         public int RaceWeekendId { get; set; }
         public RaceWeekend RaceWeekend { get; set; }
         public int DriverId { get; set; }
-        public Person Driver { get; set; }
+        public Driver Driver { get; set; }
         public int Lap { get; set; }
         public int Position { get; set; }
         public TimeSpan Time { get; set; }
@@ -22,10 +21,10 @@ namespace F1Encyclopedia.Data.Models.Results
         {
             var values = line.Split(',');
             var raceWeekendId = RaceWeekend.RaceWeekendIdCorrection(values[0]);
-            var driverId = Person.DriverIdCorrection(values[1]);
+            var driverId = Driver.DriverIdCorrection(values[1]);
 
             var raceWeekend = context.RaceWeekends.FirstOrDefault(x => x.Id == raceWeekendId);
-            var driver = context.Persons.FirstOrDefault(x => x.Id == driverId);
+            var driver = context.Drivers.FirstOrDefault(x => x.Id == driverId);
 
             LogUnmatchedProperties(driver, driverId);
             LogUnmatchedProperties(raceWeekend, raceWeekendId);

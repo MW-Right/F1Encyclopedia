@@ -1,13 +1,13 @@
-﻿using F1Encyclopedia.Data.Models.ConstructorTeams;
-using F1Encyclopedia.Data.Models.Drivers;
+﻿using F1Encyclopedia.Data.Models.Common;
+using F1Encyclopedia.Data.Models.ConstructorTeams;
 using F1Encyclopedia.Data.Seeding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace F1Encyclopedia.Data.Models.Common
+namespace F1Encyclopedia.Data.Models.Drivers
 {
-    public class Person
+    public class Driver
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -21,14 +21,18 @@ namespace F1Encyclopedia.Data.Models.Common
 
         private string Nationality => Country.Nationality;
 
-        public int? DriverInformationId { get; set; }
-        public DriverInformation DriverInformation { get; set; }
+        public int? Number { get; set; }
+        public bool DaddysCash { get; set; }
+        public int? Pace { get; set; }
+        public int? Experience { get; set; }
+        public int? Racecraft { get; set; }
+        public int? Awareness { get; set; }
 
         public List<PersonRole> Teams { get; set; }
         public List<DriverRating> DriverRatings { get; set; }
 
 
-        public static Person FromCsv(string line, F1EncyclopediaContext db)
+        public static Driver FromCsv(string line, F1EncyclopediaContext db)
         {
             var values = line.Split(',');
 
@@ -43,7 +47,7 @@ namespace F1Encyclopedia.Data.Models.Common
                 Console.WriteLine($"Country not found from nationality: {values[4]}");
             }
 
-            var person = new Person()
+            var person = new Driver()
             {
                 FirstName = values[1],
                 LastName = values[2],

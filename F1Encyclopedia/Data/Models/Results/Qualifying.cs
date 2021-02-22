@@ -1,9 +1,8 @@
 ﻿using F1Encyclopedia.Data.Models.Common;
 using F1Encyclopedia.Data.Models.ConstructorTeams;
+using F1Encyclopedia.Data.Models.Drivers;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace F1Encyclopedia.Data.Models.Results
 {
@@ -14,7 +13,7 @@ namespace F1Encyclopedia.Data.Models.Results
         public RaceWeekend RaceWeekend { get; set; }
 
         public int DriverId { get; set; }
-        public Person Driver { get; set; }
+        public Driver Driver { get; set; }
 
         public int ConstructorId { get; set; }
         public Constructor Constructor { get; set; }
@@ -28,13 +27,13 @@ namespace F1Encyclopedia.Data.Models.Results
             var values = line.Split(',');
 
             var correctedRaceWeekendId = RaceWeekend.RaceWeekendIdCorrection(values[1]);
-            var correctedDriverId = Person.DriverIdCorrection(values[2]);
+            var correctedDriverId = Driver.DriverIdCorrection(values[2]);
             var correctedConstructorId = Constructor.ConstructorIdCorrection(values[3]);
 
             var raceWeekend = db.RaceWeekends.FirstOrDefault(x =>
                 x.Id == Convert.ToInt32(values[1]));
 
-            var driver = db.Persons.FirstOrDefault(x =>
+            var driver = db.Drivers.FirstOrDefault(x =>
                 x.Id == Convert.ToInt32(values[2]));
 
             var constructor = db.Constructors.FirstOrDefault(x =>

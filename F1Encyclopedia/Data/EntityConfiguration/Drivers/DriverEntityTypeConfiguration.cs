@@ -2,19 +2,27 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace F1Encyclopedia.Data.EntityConfiguration.Drivers
+namespace F1Encyclopedia.Data.EntityConfiguration.Common
 {
-    public class DriverInformationEntityTypeConfiguration : IEntityTypeConfiguration<DriverInformation>
+    public class DriverEntityTypeConfiguration : IEntityTypeConfiguration<Driver>
     {
-        public void Configure(EntityTypeBuilder<DriverInformation> builder)
+        public void Configure(EntityTypeBuilder<Driver> builder)
         {
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
-            builder.HasOne(x => x.Driver)
-                .WithOne(x => x.DriverInformation)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.Property(x => x.FirstName)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            builder.Property(x => x.LastName)
+                .IsRequired()
+                .HasMaxLength(50);
+
+            builder.HasOne(x => x.Country)
+                .WithMany()
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.Property(x => x.Number)
                 .HasMaxLength(2);

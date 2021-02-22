@@ -1,4 +1,5 @@
 ﻿using F1Encyclopedia.Data.Models.Common;
+using F1Encyclopedia.Data.Models.Drivers;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace F1Encyclopedia.Data.Models.ConstructorTeams
@@ -8,7 +9,10 @@ namespace F1Encyclopedia.Data.Models.ConstructorTeams
         public int Id { get; set; }
 
         public int EmployeeId { get; set; }
-        public Person Employee { get; set; }
+
+        //TODO Create Person model for employee history
+
+        public Driver Employee { get; set; }
 
         public int ConstructorId { get; set; }
         public Constructor Constructor{ get; set; }

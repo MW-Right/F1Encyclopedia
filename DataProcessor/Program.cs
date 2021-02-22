@@ -1,6 +1,7 @@
 ﻿using F1Encyclopedia.Data;
 using F1Encyclopedia.Data.Models.Common;
 using F1Encyclopedia.Data.Models.ConstructorTeams;
+using F1Encyclopedia.Data.Models.Drivers;
 using F1Encyclopedia.Data.Models.Results;
 using F1Encyclopedia.Data.Models.Tracks;
 using F1Encyclopedia.Data.Seeding;
@@ -22,11 +23,11 @@ namespace DataProcessor
                 context.CleanTable("LapTimes");
                 context.CleanTable("RaceStatuses");
                 context.CleanTable("Qualifyings");
-                context.CleanTable("Constructors");
-                context.CleanTable("RaceWeekends");
-                context.CleanTable("Persons");
-                context.CleanTable("Tracks");
-                context.CleanTable("Countries");
+                //context.CleanTable("Constructors");
+                //context.CleanTable("RaceWeekends");
+                context.CleanTable("Drivers");
+                //context.CleanTable("Tracks");
+                //context.CleanTable("Countries");
             }
 
             /* Order of seeding:
@@ -40,11 +41,11 @@ namespace DataProcessor
              * LapTime
              * RaceResults
              */
-            ProcessErgastCountries();
-            ProcessErgastTracks();
+            //ProcessErgastCountries();
+            //ProcessErgastTracks();
             ProcessErgastDrivers();
-            ProcessErgastRaceWeekends();
-            ProcessErgastConstructors();
+            //ProcessErgastRaceWeekends();
+            //ProcessErgastConstructors();
             ProcessErgastQualifying();
             ProcessErgastRaceStatus();
             ProcessErgastLapTimes();
@@ -172,7 +173,7 @@ namespace DataProcessor
             var length = 0;
             var docOpen = true;
 
-            var data = new List<Person>();
+            var data = new List<Driver>();
 
             using (var db = new F1EncyclopediaContext())
             {
@@ -192,7 +193,7 @@ namespace DataProcessor
                             {
                                 counter++;
                                 Console.Write("\rProcessed: {0} ({1}%)", counter, counter * 100 / length);
-                                data.Add(Person.FromCsv(line, db));
+                                data.Add(Driver.FromCsv(line, db));
                             }
 
                             docOpen = false;
@@ -212,7 +213,7 @@ namespace DataProcessor
                 foreach (var d in data)
                 {
                     counter++;
-                    db.Persons.AddIfNotExists(d, x => x.FirstName == d.FirstName && x.LastName == d.LastName);
+                    db.Drivers.AddIfNotExists(d, x => x.FirstName == d.FirstName && x.LastName == d.LastName);
                     Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
                 }
                 Console.WriteLine("\nEntities added and tracked. Saving changes...");

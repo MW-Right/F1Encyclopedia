@@ -19,7 +19,6 @@ namespace F1Encyclopedia.Data
 
         // Common
         public virtual DbSet<Country> Countries { get; set; }
-        public virtual DbSet<Person> Persons { get; set; }
         public virtual DbSet<RaceWeekend> RaceWeekends { get; set; }
         
         // Constructors
@@ -28,7 +27,7 @@ namespace F1Encyclopedia.Data
         public virtual DbSet<PersonRole> PersonRoles { get; set; }
         
         // Drivers
-        public virtual DbSet<DriverInformation> DriverInformations { get; set; }
+        public virtual DbSet<Driver> Drivers { get; set; }
         public virtual DbSet<DriverRating> DriverRatings { get; set; }
         
         // Tracks

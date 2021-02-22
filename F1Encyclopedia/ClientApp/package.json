@@ -7,7 +7,7 @@
     "build": "ng build",
     "build:ssr": "ng run F1EncyclopediaAPI:server:dev",
     "test": "ng test",
-    "lint": "ng lint",
+    "lint": "tsc --noEmit && eslint . --ext js,ts,json --quiet --fix",
     "e2e": "ng e2e"
   },
   "private": true,
@@ -39,7 +39,11 @@
     "@types/jasmine": "~3.4.4",
     "@types/jasminewd2": "~2.0.8",
     "@types/node": "~12.11.6",
+    "@typescript-eslint/eslint-plugin": "^4.15.1",
     "codelyzer": "^5.2.0",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^8.0.0",
+    "eslint-plugin-prettier": "^3.3.1",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "^5.0.2",
@@ -47,6 +51,8 @@
     "karma-coverage-istanbul-reporter": "~2.1.0",
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.2",
+    "prettier": "^2.2.1",
+    "prettier-eslint": "^12.0.0",
     "typescript": "3.5.3"
   },
   "optionalDependencies": {

@@ -1,10 +1,8 @@
-﻿using F1Encyclopedia.Data.Models.Common;
-using System;
+﻿using F1Encyclopedia.Data.Models.Drivers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace F1Encyclopedia.Data.Seeding
 {
@@ -18,7 +16,7 @@ namespace F1Encyclopedia.Data.Seeding
             var length = 0;
             var docOpen = true;
 
-            var data = new List<Person>();
+            var data = new List<Driver>();
 
             using (var db = new F1EncyclopediaContext())
             {
@@ -39,7 +37,7 @@ namespace F1Encyclopedia.Data.Seeding
                                 counter++;
                                 if (counter % 10 == 0)
                                     Debug.Write($"\rProcessed: {counter} ({counter * 100 / length}%)");
-                                data.Add(Person.FromCsv(line, db));
+                                data.Add(Driver.FromCsv(line, db));
                             }
 
                             docOpen = false;
@@ -59,7 +57,7 @@ namespace F1Encyclopedia.Data.Seeding
                 foreach (var d in data)
                 {
                     counter++;
-                    db.Persons.AddIfNotExists(d, x => x.FirstName == d.FirstName && x.LastName == d.LastName);
+                    db.Drivers.AddIfNotExists(d, x => x.FirstName == d.FirstName && x.LastName == d.LastName);
                     if (counter % 10 == 0)
                         Debug.Write($"\rAdded: {counter} ({counter * 100 / length}%)");
                 }

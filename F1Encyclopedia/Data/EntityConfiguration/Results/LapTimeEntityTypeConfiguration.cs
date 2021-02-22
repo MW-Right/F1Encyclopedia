@@ -16,12 +16,12 @@ namespace F1Encyclopedia.Data.EntityConfiguration.Results
             builder.HasOne(x => x.RaceWeekend)
                 .WithMany()
                 .HasForeignKey(x => x.RaceWeekendId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(x => x.Driver)
                 .WithMany()
                 .HasForeignKey(x => x.DriverId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(x => x.Position)
                 .HasMaxLength(2);
