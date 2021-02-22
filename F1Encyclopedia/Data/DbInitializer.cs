@@ -12,10 +12,10 @@ namespace F1Encyclopedia.Data
         {
             context.Database.EnsureCreated();
 
-            //if (context.Countries.Any())
-            //{
-            //    return;
-            //}
+            if (context.Countries.Any())
+            {
+                return;
+            }
 
             Seed.SeedDb();
         }
