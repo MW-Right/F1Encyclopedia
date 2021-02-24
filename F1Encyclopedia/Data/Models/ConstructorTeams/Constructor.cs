@@ -3,6 +3,8 @@ using F1Encyclopedia.Data.Seeding;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace F1Encyclopedia.Data.Models.ConstructorTeams
 {
@@ -32,6 +34,7 @@ namespace F1Encyclopedia.Data.Models.ConstructorTeams
 
             var constructor = new Constructor()
             {
+                Id = Convert.ToInt16(values[0]),
                 Name = values[1],
                 CountryId = country != null ? country.Id : 1,
                 WikiUrl = values[3]
@@ -63,6 +66,15 @@ namespace F1Encyclopedia.Data.Models.ConstructorTeams
                     return id -= 1;
             }
             return id;
+        }
+
+        public static async Task<Constructor> FindByIdAsync(int constructorId)
+        {
+            using (var db = new F1EncyclopediaContext())
+            {
+                return await db.Constructors.Where(x => x.Id == constructorId)
+                    .SingleOrDefaultAsync();
+            }
         }
     }
 }

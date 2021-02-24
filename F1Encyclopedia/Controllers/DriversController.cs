@@ -4,6 +4,7 @@ using System;
 using F1Encyclopedia.Data;
 using System.Threading.Tasks;
 using F1Encyclopedia.Data.Models.Drivers;
+using F1Encyclopedia.Data.Models.ConstructorTeams;
 
 namespace F1Encyclopedia.Controllers
 {
@@ -31,10 +32,13 @@ namespace F1Encyclopedia.Controllers
         [Route("/snapshot")]
         public Driver GetDriversSnapshot([FromQuery] int? constructorId = null)
         {
-            if (constructorId != null)
+            if (constructorId == null)
             {
+                //return dbContext.Drivers.
             }
             return new Driver();
+            //var constructor = Constructor.FindByIdAsync()
+            //logger.LogInformation(constructorId != null ? "Fetching drivers snapshot for constructor: ")
         }
     }
 }

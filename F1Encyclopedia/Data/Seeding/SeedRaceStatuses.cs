@@ -52,16 +52,17 @@ namespace F1Encyclopedia.Data.Seeding
                 counter = 0;
                 Debug.WriteLine("\nCompleted processing data. Starting add.");
 
-                foreach (var c in data)
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    counter++;
-                    db.RaceStatuses.AddIfNotExists(c, x => x.Status == c.Status);
-                    if (counter % 10 == 0)
-                        Debug.Write($"\rAdded: {counter} ({counter * 100 / length}%)");
+                    foreach (var c in data)
+                    {
+                        counter++;
+                        db.RaceStatuses.AddIfNotExists(c, x => x.Status == c.Status);
+                        if (counter % 10 == 0)
+                            Debug.Write($"\rAdded: {counter} ({counter * 100 / length}%)");
+                    }
+                    Seed.AddWithIdentityInsert("RaceStatuses", transaction, db);
                 }
-                Debug.WriteLine("\nEntities added and tracked, saving changes...");
-                db.SaveChanges();
-                Debug.WriteLine("Completed.\n\n\n\n");
             }
         }
 

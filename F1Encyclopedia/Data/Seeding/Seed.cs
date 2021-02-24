@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -53,7 +56,7 @@ namespace F1Encyclopedia.Data.Seeding
                 context.CleanTable("Qualifyings");
                 context.CleanTable("Constructors");
                 context.CleanTable("RaceWeekends");
-                context.CleanTable("Persons");
+                context.CleanTable("Drivers");
                 context.CleanTable("Tracks");
                 context.CleanTable("Countries");
             }
@@ -71,6 +74,24 @@ namespace F1Encyclopedia.Data.Seeding
             SeedRaceStatuses.ProcessErgastRaceStatus();
             SeedLapTimes.ProcessErgastLapTimes();
             SeedRaceResults.ProcessErgastRaceResults();
+        }
+
+        public static void AddWithIdentityInsert(string tableName, IDbContextTransaction transaction, F1EncyclopediaContext db)
+        {
+            Debug.WriteLine("\nEntities added and tracked, saving changes...");
+            db.Database.ExecuteSqlRaw($"SET IDENTITY_INSERT dbo.{tableName} ON");
+            db.SaveChanges();
+            db.Database.ExecuteSqlRaw($"SET IDENTITY_INSERT dbo.{tableName} OFF");
+            Debug.WriteLine("Completed.\n\n\n\n");
+            transaction.Commit();
+        }
+
+        public static void AddWithoutIdentityInsert(IDbContextTransaction transaction, F1EncyclopediaContext db)
+        {
+            Debug.WriteLine("\nEntities added and tracked, saving changes...");
+            db.SaveChanges();
+            Debug.WriteLine("Completed.\n\n\n\n");
+            transaction.Commit();
         }
     }
 }

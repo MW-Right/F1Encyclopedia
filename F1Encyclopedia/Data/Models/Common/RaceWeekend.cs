@@ -70,6 +70,7 @@ namespace F1Encyclopedia.Data.Models.Common
 
                 var raceWeekend = new RaceWeekend
                 {
+                    Id = Convert.ToInt16(values[0]),
                     Year = Convert.ToInt16(values[1]),
                     Round = Convert.ToInt16(values[2]),
                     TrackId = track != null ? track.Id : 1,

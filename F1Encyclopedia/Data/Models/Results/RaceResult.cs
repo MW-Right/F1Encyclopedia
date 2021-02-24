@@ -51,6 +51,7 @@ namespace F1Encyclopedia.Data.Models.Results
 
             var raceResult = new RaceResult()
             {
+                Id = Convert.ToInt16(values[0]),
                 GridPosition = Convert.ToInt32(values[5]),
                 Position = Convert.ToInt32(values[8]),
                 Points = Convert.ToSingle(values[9]),

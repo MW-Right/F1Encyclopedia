@@ -1,8 +1,5 @@
 ﻿using F1Encyclopedia.Data.Seeding;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace F1Encyclopedia.Data
 {
@@ -14,7 +11,7 @@ namespace F1Encyclopedia.Data
 
             if (context.Countries.Any())
             {
-                return;
+               // return;
             }
 
             Seed.SeedDb();

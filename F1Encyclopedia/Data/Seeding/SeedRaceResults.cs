@@ -53,18 +53,19 @@ namespace F1Encyclopedia.Data.Seeding
                 counter = 0;
                 Debug.WriteLine("\nCompleted processing data. Starting add.");
 
-                foreach (var c in data)
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    counter++;
-                    db.RaceResults.AddIfNotExists(c, x =>
-                        x.RaceWeekendId == c.RaceWeekendId &&
-                        x.DriverId == c.DriverId);
-                    if (counter % 10000 == 0)
-                        Debug.Write($"\rAdded: {counter} ({counter * 100 / length}%)");
+                    foreach (var c in data)
+                    {
+                        counter++;
+                        db.RaceResults.AddIfNotExists(c, x =>
+                            x.RaceWeekendId == c.RaceWeekendId &&
+                            x.DriverId == c.DriverId);
+                        if (counter % 10000 == 0)
+                            Debug.Write($"\rAdded: {counter} ({counter * 100 / length}%)");
+                    }
+                    Seed.AddWithIdentityInsert("RaceResults", transaction, db);
                 }
-                Debug.WriteLine("\nEntities added and tracked, saving changes...");
-                db.SaveChanges();
-                Debug.WriteLine("Completed.\n\n\n\n");
             }
         }
 

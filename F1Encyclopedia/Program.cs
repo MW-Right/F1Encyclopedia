@@ -45,7 +45,7 @@ namespace F1EncyclopediaAPI
                 catch (Exception e)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(e, "An error occurred creating the database.");
+                    logger.LogError(e.Message, "An error occurred creating the database.");
                 }
             }
         }

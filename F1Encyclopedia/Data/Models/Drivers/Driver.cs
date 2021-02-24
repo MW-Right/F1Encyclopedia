@@ -1,9 +1,11 @@
 ﻿using F1Encyclopedia.Data.Models.Common;
 using F1Encyclopedia.Data.Models.ConstructorTeams;
 using F1Encyclopedia.Data.Seeding;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace F1Encyclopedia.Data.Models.Drivers
 {
@@ -49,6 +51,7 @@ namespace F1Encyclopedia.Data.Models.Drivers
 
             var person = new Driver()
             {
+                Id = Convert.ToInt32(values[0]),
                 FirstName = values[1],
                 LastName = values[2],
                 DoB = DateTime.Parse(values[3]),
@@ -77,6 +80,15 @@ namespace F1Encyclopedia.Data.Models.Drivers
                     return id -= 1;
             }
             return id;
+        }
+
+        public static async Task<Driver> FindByIdAsync(int id)
+        {
+            using (var db = new F1EncyclopediaContext())
+            {
+                return await db.Drivers.Where(x => x.Id == id)
+                    .SingleOrDefaultAsync();
+            }
         }
     }
 }

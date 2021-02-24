@@ -45,6 +45,7 @@ namespace F1Encyclopedia.Data.Models.Results
 
             var quali = new Qualifying()
             {
+                Id = Convert.ToInt16(values[0]),
                 RaceWeekendId = raceWeekend != null ? raceWeekend.Id : 1,
                 DriverId = driver != null ? driver.Id : 1,
                 ConstructorId = constructor != null ? constructor.Id : 1,

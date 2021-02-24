@@ -24,6 +24,7 @@ namespace F1Encyclopedia.Data.Models.Results
             var values = line.Split(',');
 
             return new RaceStatus(){
+                Id = Convert.ToInt16(values[0]),
                 Status = values[1]
             };
         }

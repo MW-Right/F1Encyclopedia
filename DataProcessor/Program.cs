@@ -5,6 +5,8 @@ using F1Encyclopedia.Data.Models.Drivers;
 using F1Encyclopedia.Data.Models.Results;
 using F1Encyclopedia.Data.Models.Tracks;
 using F1Encyclopedia.Data.Seeding;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,11 +25,11 @@ namespace DataProcessor
                 context.CleanTable("LapTimes");
                 context.CleanTable("RaceStatuses");
                 context.CleanTable("Qualifyings");
-                //context.CleanTable("Constructors");
-                //context.CleanTable("RaceWeekends");
+                context.CleanTable("Constructors");
+                context.CleanTable("RaceWeekends");
                 context.CleanTable("Drivers");
-                //context.CleanTable("Tracks");
-                //context.CleanTable("Countries");
+                context.CleanTable("Tracks");
+                context.CleanTable("Countries");
             }
 
             /* Order of seeding:
@@ -41,11 +43,11 @@ namespace DataProcessor
              * LapTime
              * RaceResults
              */
-            //ProcessErgastCountries();
-            //ProcessErgastTracks();
+            ProcessErgastCountries();
+            ProcessErgastTracks();
             ProcessErgastDrivers();
-            //ProcessErgastRaceWeekends();
-            //ProcessErgastConstructors();
+            ProcessErgastRaceWeekends();
+            ProcessErgastConstructors();
             ProcessErgastQualifying();
             ProcessErgastRaceStatus();
             ProcessErgastLapTimes();
@@ -96,15 +98,16 @@ namespace DataProcessor
                 counter = 0;
                 Console.WriteLine("\nCompleted processing. Starting add.");
 
-                foreach (var c in data)
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    counter++;
-                    db.Countries.AddIfNotExists(c, x => x.Name == c.Name);
-                    Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    foreach (var c in data)
+                    {
+                        counter++;
+                        db.Countries.AddIfNotExists(c, x => x.Name == c.Name);
+                        Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    }
+                    Seed.AddWithIdentityInsert("Drivers", transaction, db);
                 }
-                Console.WriteLine("\nEntities added and tracked, saving changes...");
-                db.SaveChanges();
-                Console.WriteLine("Completed. \n\n\n\n");
             }
         }
 
@@ -153,15 +156,16 @@ namespace DataProcessor
                 counter = 0;
                 Console.WriteLine("\nCompleted processing. Starting add.");
 
-                foreach (var t in data)
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    counter++;
-                    db.Tracks.AddIfNotExists(t, x => x.Name == t.Name);
-                    Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    foreach (var t in data)
+                    {
+                        counter++;
+                        db.Tracks.AddIfNotExists(t, x => x.Name == t.Name);
+                        Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    }
+                    Seed.AddWithIdentityInsert("Tracks", transaction, db);
                 }
-                Console.WriteLine("\nEntities added and tracked. Saving changes...");
-                db.SaveChanges();
-                Console.WriteLine("Completed.\n\n\n\n");
             }
         }
 
@@ -209,16 +213,16 @@ namespace DataProcessor
 
                 counter = 0;
                 Console.WriteLine("\nCompleted processing. Starting add.");
-
-                foreach (var d in data)
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    counter++;
-                    db.Drivers.AddIfNotExists(d, x => x.FirstName == d.FirstName && x.LastName == d.LastName);
-                    Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    foreach (var d in data)
+                    {
+                        counter++;
+                        db.Drivers.AddIfNotExists(d, x => x.FirstName == d.FirstName && x.LastName == d.LastName);
+                        Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    }
+                    Seed.AddWithIdentityInsert("Drivers", transaction, db);
                 }
-                Console.WriteLine("\nEntities added and tracked. Saving changes...");
-                db.SaveChanges();
-                Console.WriteLine("Completed.\n\n\n\n");
             }
         }
 
@@ -265,16 +269,16 @@ namespace DataProcessor
 
                 counter = 0;
                 Console.WriteLine("\nCompleted processing. Starting add.");
-
-                foreach (var rw in data)
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    counter++;
-                    db.RaceWeekends.AddIfNotExists(rw, x => x.Name == rw.Name && x.Round == rw.Round && x.Year == rw.Year);
-                    Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    foreach (var rw in data)
+                    {
+                        counter++;
+                        db.RaceWeekends.AddIfNotExists(rw, x => x.Name == rw.Name && x.Round == rw.Round && x.Year == rw.Year);
+                        Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    }
+                    Seed.AddWithIdentityInsert("RaceWeekends", transaction, db);
                 }
-                Console.WriteLine("\nEntities added and tracked, saving changes...");
-                db.SaveChanges();
-                Console.WriteLine("Completed.\n\n\n\n");
             }
         }
 
@@ -321,15 +325,16 @@ namespace DataProcessor
                 counter = 0;
                 Console.WriteLine("\nCompleted processing data. Starting add.");
 
-                foreach (var q in data)
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    counter++;
-                    db.Qualifyings.AddIfNotExists(q, x => x.DriverId == q.DriverId && x.RaceWeekendId == q.RaceWeekendId);
-                    Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    foreach (var q in data)
+                    {
+                        counter++;
+                        db.Qualifyings.AddIfNotExists(q, x => x.DriverId == q.DriverId && x.RaceWeekendId == q.RaceWeekendId);
+                        Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    }
+                    Seed.AddWithIdentityInsert("Qualifyings", transaction, db);
                 }
-                Console.WriteLine("\nEntities added and tracked, saving changes...");
-                db.SaveChanges();
-                Console.WriteLine("Completed.\n\n\n\n");
             }
         }
 
@@ -375,15 +380,16 @@ namespace DataProcessor
                 counter = 0;
                 Console.WriteLine("\nCompleted processing data. Starting add.");
 
-                foreach (var c in data)
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    counter++;
-                    db.Constructors.AddIfNotExists(c, x => x.Name == c.Name);
-                    Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    foreach (var c in data)
+                    {
+                        counter++;
+                        db.Constructors.AddIfNotExists(c, x => x.Name == c.Name);
+                        Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    }
+                    Seed.AddWithIdentityInsert("Constructors", transaction, db);
                 }
-                Console.WriteLine("\nEntities added and tracked, saving changes...");
-                db.SaveChanges();
-                Console.WriteLine("Completed.\n\n\n\n");
             }
         }
 
@@ -428,15 +434,16 @@ namespace DataProcessor
                 counter = 0;
                 Console.WriteLine("\nCompleted processing data. Starting add.");
 
-                foreach (var c in data)
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    counter++;
-                    db.RaceStatuses.AddIfNotExists(c, x => x.Status == c.Status);
-                    Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    foreach (var c in data)
+                    {
+                        counter++;
+                        db.RaceStatuses.AddIfNotExists(c, x => x.Status == c.Status);
+                        Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    }
+                    Seed.AddWithIdentityInsert("RaceStatuses", transaction, db);
                 }
-                Console.WriteLine("\nEntities added and tracked, saving changes...");
-                db.SaveChanges();
-                Console.WriteLine("Completed.\n\n\n\n");
             }
         }
 
@@ -482,17 +489,18 @@ namespace DataProcessor
                 counter = 0;
                 Console.WriteLine("\nCompleted processing data. Starting add.");
 
-                foreach (var c in data)
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    counter++;
-                    db.RaceResults.AddIfNotExists(c, x =>
-                        x.RaceWeekendId == c.RaceWeekendId &&
-                        x.DriverId == c.DriverId);
-                    Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    foreach (var c in data)
+                    {
+                        counter++;
+                        db.RaceResults.AddIfNotExists(c, x =>
+                            x.RaceWeekendId == c.RaceWeekendId &&
+                            x.DriverId == c.DriverId);
+                        Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    }
+                    Seed.AddWithIdentityInsert("RaceResults", transaction, db);
                 }
-                Console.WriteLine("\nEntities added and tracked, saving changes...");
-                db.SaveChanges();
-                Console.WriteLine("Completed.\n\n\n\n");
             }
         }
 
@@ -538,18 +546,19 @@ namespace DataProcessor
                 counter = 0;
                 Console.WriteLine("\nCompleted processing data. Starting add.");
 
-                foreach (var lt in data)
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    counter++;
-                    db.LapTimes.AddIfNotExists(lt, x =>
-                        x.RaceWeekendId == lt.RaceWeekendId &&
-                        x.DriverId == lt.DriverId &&
-                        x.Lap == lt.Lap);
-                    Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    foreach (var lt in data)
+                    {
+                        counter++;
+                        db.LapTimes.AddIfNotExists(lt, x =>
+                            x.RaceWeekendId == lt.RaceWeekendId &&
+                            x.DriverId == lt.DriverId &&
+                            x.Lap == lt.Lap);
+                        Console.Write("\rAdded: {0} ({1}%)", counter, counter * 100 / length);
+                    }
+                    Seed.AddWithIdentityInsert("LapTimes", transaction, db);
                 }
-                Console.WriteLine("\nEntities added and tracked, saving changes...");
-                db.SaveChanges();
-                Console.WriteLine("Completed.\n\n\n\n");
             }
         }
 

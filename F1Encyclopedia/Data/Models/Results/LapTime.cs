@@ -31,6 +31,7 @@ namespace F1Encyclopedia.Data.Models.Results
 
             return new LapTime()
             {
+                Id = Convert.ToInt16(values[0]),
                 RaceWeekendId = raceWeekend != null ? raceWeekend.Id : 1,
                 DriverId = driver != null ? driver.Id : 1,
                 Lap = Convert.ToInt32(values[2]),

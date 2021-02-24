@@ -40,6 +40,7 @@ namespace F1Encyclopedia.Data.Models.Tracks
 
                 var track = new Track()
                 {
+                    Id = Convert.ToInt16(values[0]),
                     Name = values[1],
                     City = values[2],
                     CountryId = country != null ? country.Id : 1,
