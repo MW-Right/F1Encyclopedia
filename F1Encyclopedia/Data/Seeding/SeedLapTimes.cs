@@ -65,7 +65,7 @@ namespace F1Encyclopedia.Data.Seeding
                         if (counter % 10000 == 0)
                             Debug.Write($"\rAdded: {counter} ({counter * 100 / length}%)");
                     }
-                    Seed.AddWithIdentityInsert("LapTimes", transaction, db);
+                    Seed.AddWithoutIdentityInsert(transaction, db);
                 }
             }
         }

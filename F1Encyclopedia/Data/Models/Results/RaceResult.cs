@@ -34,10 +34,10 @@ namespace F1Encyclopedia.Data.Models.Results
         {
             var values = line.Split(',');
 
-            var raceWeekendId = RaceWeekend.RaceWeekendIdCorrection(values[1]);
-            var driverId = Driver.DriverIdCorrection(values[2]);
-            var constructorId = Constructor.ConstructorIdCorrection(values[3]);
-            var statusId = RaceStatus.StatusIdCorrection(values[17]);
+            var raceWeekendId = Convert.ToInt16(values[1]);
+            var driverId = Convert.ToInt16(values[2]);
+            var constructorId = Convert.ToInt16(values[3]);
+            var statusId = Convert.ToInt16(values[17]);
 
             var raceWeekend = db.RaceWeekends.FirstOrDefault(x => x.Id == raceWeekendId);
             var driver = db.Drivers.FirstOrDefault(x => x.Id == driverId);

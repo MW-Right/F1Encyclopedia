@@ -41,8 +41,8 @@ namespace F1Encyclopedia.Data.Models.Common
             
             using(var db = new F1EncyclopediaContext())
             {
-                var correctedTrackId = Track.TrackIdCorrection(Convert.ToInt16(values[3]));
-                var track = db.Tracks.FirstOrDefault(x => x.Id == correctedTrackId);
+                var trackId = Convert.ToInt16(values[3]);
+                var track = db.Tracks.FirstOrDefault(x => x.Id == trackId);
 
                 if (track == null)
                 {

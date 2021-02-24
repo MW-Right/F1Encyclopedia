@@ -20,8 +20,8 @@ namespace F1Encyclopedia.Data.Models.Results
         public static LapTime FromCsv(string line, F1EncyclopediaContext context)
         {
             var values = line.Split(',');
-            var raceWeekendId = RaceWeekend.RaceWeekendIdCorrection(values[0]);
-            var driverId = Driver.DriverIdCorrection(values[1]);
+            var raceWeekendId = Convert.ToInt16(values[0]);
+            var driverId = Convert.ToInt16(values[1]);
 
             var raceWeekend = context.RaceWeekends.FirstOrDefault(x => x.Id == raceWeekendId);
             var driver = context.Drivers.FirstOrDefault(x => x.Id == driverId);
@@ -31,7 +31,6 @@ namespace F1Encyclopedia.Data.Models.Results
 
             return new LapTime()
             {
-                Id = Convert.ToInt16(values[0]),
                 RaceWeekendId = raceWeekend != null ? raceWeekend.Id : 1,
                 DriverId = driver != null ? driver.Id : 1,
                 Lap = Convert.ToInt32(values[2]),

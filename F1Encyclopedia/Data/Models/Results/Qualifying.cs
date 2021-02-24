@@ -26,9 +26,9 @@ namespace F1Encyclopedia.Data.Models.Results
         {
             var values = line.Split(',');
 
-            var correctedRaceWeekendId = RaceWeekend.RaceWeekendIdCorrection(values[1]);
-            var correctedDriverId = Driver.DriverIdCorrection(values[2]);
-            var correctedConstructorId = Constructor.ConstructorIdCorrection(values[3]);
+            var raceWeekendId = Convert.ToInt16(values[1]);
+            var driverId = Convert.ToInt16(values[2]);
+            var constructorId = Convert.ToInt16(values[3]);
 
             var raceWeekend = db.RaceWeekends.FirstOrDefault(x =>
                 x.Id == Convert.ToInt32(values[1]));
@@ -39,9 +39,9 @@ namespace F1Encyclopedia.Data.Models.Results
             var constructor = db.Constructors.FirstOrDefault(x =>
                 x.Id == Convert.ToInt32(values[3]));
 
-            LogUnmatchedProperties(raceWeekend, correctedRaceWeekendId);
-            LogUnmatchedProperties(driver, correctedDriverId);
-            LogUnmatchedProperties(constructor, correctedConstructorId);
+            LogUnmatchedProperties(raceWeekend, raceWeekendId);
+            LogUnmatchedProperties(driver, driverId);
+            LogUnmatchedProperties(constructor, constructorId);
 
             var quali = new Qualifying()
             {
