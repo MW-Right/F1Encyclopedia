@@ -20,9 +20,6 @@ namespace F1Encyclopedia.Data.Models.Drivers
 
         public int CountryId { get; set; }
         public Country Country { get; set; }
-
-        private string Nationality => Country.Nationality;
-
         public int? Number { get; set; }
         public bool DaddysCash { get; set; }
         public int? Pace { get; set; }

@@ -11,7 +11,7 @@ namespace F1Encyclopedia.Data
 
             if (context.Countries.Any())
             {
-               // return;
+                return;
             }
 
             Seed.SeedDb();

@@ -12,7 +12,7 @@ namespace F1Encyclopedia.Validators.Drivers
     {
         public GetDriversSnapshotValidator()
         {
-            RuleFor(x => x.Drivers).Must(x => x.Count() < 10);
+            RuleFor(x => x.DriverSnapshots).Must(x => x.Count() < 10);
         }
     }
 }

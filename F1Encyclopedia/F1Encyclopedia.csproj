@@ -72,7 +72,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Core\Commands\" />
+    <Folder Include="API\Core\Commands\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

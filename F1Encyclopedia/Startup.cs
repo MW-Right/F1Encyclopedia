@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using F1Encyclopedia.Data;
+using F1Encyclopedia.Core.Queries;
 
 namespace F1EncyclopediaAPI
 {
@@ -32,6 +33,8 @@ namespace F1EncyclopediaAPI
             services.AddDbContext<F1EncyclopediaContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("F1EncyclopediaDb"))
             );
+
+            services.AddTransient<GetDriversSnapshot>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

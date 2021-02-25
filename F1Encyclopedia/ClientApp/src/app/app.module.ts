@@ -7,6 +7,11 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './Common/components/nav-menu/nav-menu.component';
 import { HomeComponent } from './Home/containers/home.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { DriversModule } from './Drivers/drivers.module';
+import { MatProgressSpinnerModule, MatTableModule } from '@angular/material';
+import { DriversSnapshotComponent } from './Drivers/components/drivers-snapshot/drivers-snapshot.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +25,13 @@ import { HomeComponent } from './Home/containers/home.component';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-    ])
+    ]),
+    BrowserAnimationsModule,
+
+    MatTableModule,
+    MatProgressSpinnerModule,
+
+    DriversModule
   ],
   providers: [],
   bootstrap: [AppComponent]
