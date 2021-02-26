@@ -63,6 +63,8 @@
     "karma-jasmine-html-reporter": "^1.4.2",
     "prettier": "^2.2.1",
     "prettier-eslint": "^12.0.0",
+    "pretty-quick": "^3.1.0",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "3.5.3"
   },
   "optionalDependencies": {
