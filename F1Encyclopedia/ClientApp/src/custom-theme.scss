@@ -9,11 +9,47 @@
 // Be sure that you only ever include this mixin once!
 @include mat-core();
 
+// CUSTOM COLORS
+// below defines your custom color to build a theme palette from
+$my-papaya: (
+  50: #fff8e2,
+  100: #ffecb5,
+  200: #ffe086,
+  300: #ffd556,
+  400: #ffca35,
+  500: #ffc122,
+  600: #ffb31e,
+  700: #ff9f1c,
+  800: #fe901b,
+  900: #fd7119,
+  A100: #ffecb5,
+  A200: #ffe086,
+  A400: #ffca35,
+  A700: #ff9f1c,
+  contrast: (
+    50: black,
+    100: black,
+    200: black,
+    300: black,
+    400: black,
+    500: black,
+    600: black,
+    700: black,
+    800: black,
+    900: black,
+    A100: black,
+    A200: black,
+    A400: black,
+    A700: black,
+  )
+);
+
+
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
-$F1EncyclopediaAPI-primary: mat-palette($mat-blue);
-$F1EncyclopediaAPI-accent: mat-palette($mat-pink, A200, A100, A400);
+$F1EncyclopediaAPI-primary: mat-palette($mat-orange);
+$F1EncyclopediaAPI-accent: mat-palette($mat-blue-gray, A200, A100, A400);
 
 // The warn palette is optional (defaults to red).
 $F1EncyclopediaAPI-warn: mat-palette($mat-red);

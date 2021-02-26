@@ -16,6 +16,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.driverSnapshots$ = this.driversService.getDriverSnapshots().pipe(tap(x => console.log(x)));
+    this.driverSnapshots$ = this.driversService.getDriverSnapshots();
   }
 }

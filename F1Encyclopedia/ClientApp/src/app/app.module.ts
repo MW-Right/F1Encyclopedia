@@ -10,7 +10,7 @@ import { HomeComponent } from './Home/containers/home.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { DriversModule } from './Drivers/drivers.module';
-import { MatProgressSpinnerModule, MatTableModule } from '@angular/material';
+import { MatCardModule, MatProgressSpinnerModule, MatTableModule } from '@angular/material';
 import { DriversSnapshotComponent } from './Drivers/components/drivers-snapshot/drivers-snapshot.component';
 
 @NgModule({
@@ -27,10 +27,7 @@ import { DriversSnapshotComponent } from './Drivers/components/drivers-snapshot/
       { path: '', component: HomeComponent, pathMatch: 'full' },
     ]),
     BrowserAnimationsModule,
-
-    MatTableModule,
-    MatProgressSpinnerModule,
-
+  
     DriversModule
   ],
   providers: [],
