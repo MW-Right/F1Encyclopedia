@@ -26,7 +26,7 @@ export class DriversService {
           params: params,
         })
         .pipe(
-          map((data) => data.map((data) => new DriverSnapshot().deserialise(data))),
+          map((data) => data.map((d) => new DriverSnapshot().deserialise(d))),
           catchError(() => throwError("DriverSnapshot not found."))
         );
     }
@@ -37,7 +37,7 @@ export class DriversService {
           observe: "body",
         })
         .pipe(
-          map((data) => data.map((data) => new DriverSnapshot().deserialise(data))),
+          map((data) => data.map((d) => new DriverSnapshot().deserialise(d))),
           catchError(() => throwError("DriverSnapshot not found."))
         );
     }

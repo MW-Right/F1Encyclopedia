@@ -5,7 +5,7 @@ import { DriverSnapshot } from 'src/app/Drivers/models';
 import { DriversService } from 'src/app/Drivers/services';
 
 @Component({
-  selector: 'app-home',
+  selector: 'f1-home',
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
