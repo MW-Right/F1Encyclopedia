@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from "@angular/core";
+import { Component, HostListener, Input, OnChanges, SimpleChanges } from "@angular/core";
 import { Driver, DriverSnapshot } from "../../models";
 import { DriversService } from "../../services";
 
@@ -20,15 +20,26 @@ export class DriversSnapshotComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes.driverSnapshots && this.driverSnapshots) {
+            this.firstColumnSnapshots = this.driverSnapshots.slice(0, 5);
+            this.secondColumnSnapshots = this.driverSnapshots.slice(5, 10);
             this.driverSnapshotsLength = this.driverSnapshots.length;
-            if (this.driverSnapshotsLength <= 5) {
+
+            if (this.driverSnapshotsLength <= 5 || window.innerWidth < 768) {
                 this.isCondensedView = true;
             }
             else {
                 this.isCondensedView = false;
-                this.firstColumnSnapshots = this.driverSnapshots.slice(0, Math.round(this.driverSnapshotsLength / 2))
-                this.secondColumnSnapshots = this.driverSnapshots.slice(Math.round(this.driverSnapshotsLength / 2) - 1, this.driverSnapshotsLength - 1);
             }
+        }
+    }
+
+    @HostListener("window:resize", ['$event'])
+    onResize(event?) {
+        if (window.innerWidth < 768) {
+            this.isCondensedView = true;
+        }
+        else {
+            this.isCondensedView = this.driverSnapshotsLength <= 5;
         }
     }
 }

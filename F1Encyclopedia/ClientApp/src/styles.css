@@ -1,4 +1,22 @@
+/* font-family: 'Jura', sans-serif; */
+@import url("https://fonts.googleapis.com/css2?family=Jura&display=swap");
+/* font-family: 'Averia Serif Libre', cursive; */
+@import url("https://fonts.googleapis.com/css2?family=Averia+Serif+Libre:wght@300&display=swap");
+
 /* Provide sufficient contrast against white background */
+:root {
+  /* Colours */
+  --background-default: #6e7e85;
+  --background-secondary: #221e22;
+  --background-tertiary: #529E7E;
+  --background-quaternary: #042a2b;
+  --background-light: #fbfbff;
+
+  --primary-default: #ff9f1c;
+  --primary-alternate: #22918C;
+  --primary-dark: #0B2736;
+}
+
 a {
   color: #0366d6;
 }
@@ -8,11 +26,66 @@ code {
 }
 
 .btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  min-height: 30px;
+  background-color: var(--primary-default);
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.btn-primary:hover {
+  background-color: var(--primary-alternate);
+}
+
+.btn-icon-primary,
+.btn-icon-secondary,
+.btn-icon-dark {
+  color: white;
+  border: none;
+  box-sizing: border-box;
+  padding: 12px;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+}
+
+.btn-icon-primary:hover,
+.btn-icon-secondary:hover,
+.btn-icon-dark:hover {
+  background-color: white;
+  color: black;
+}
+
+.btn-icon-primary {
+  background-color: var(--primary-default);
+}
+
+.btn-icon-secondary {
+  background-color: var(--primary-alternate);
+}
+
+.btn-icon-dark {
+  background-color: var(--primary-dark);
+}
+
+html, body { 
+  margin: 0;
+  padding: 0;
+  height: 100%;
+
+}
+body {
+  background: var(--background-secondary);
+  margin: 0;
+  font-family: 'Averia Serif Libre', Roboto, cursive;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Jura', sans-serif;
+}
  
