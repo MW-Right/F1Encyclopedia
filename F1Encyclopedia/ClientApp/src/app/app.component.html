@@ -1,6 +1,7 @@
 <body>
   <f1-nav-menu></f1-nav-menu>
-  <div class="container">
+  <f1-loading *ngIf="showOverlay"></f1-loading>
+  <div *ngIf="!showOverlay" class="container">
     <router-outlet></router-outlet>
   </div>
 </body>
